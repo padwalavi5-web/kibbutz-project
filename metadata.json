@@ -1,0 +1,6 @@
+{
+  "name": "Kibbutz 60th Anniversary Photo Ranking",
+  "description": "אפליקציה חגיגית לדירוג והצבעת תמונות היסטוריות לציון 60 שנה לקיבוץ עלומים",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
