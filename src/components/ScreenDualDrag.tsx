@@ -78,53 +78,48 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 animate-fadeIn pb-24">
       
-      {/* סרגל עליון ראשי - מותאם לסלולר */}
-      <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-4">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 flex flex-wrap items-center gap-2.5">
-              <span>{dragPage.pageHeaderTitle}</span>
-              <span className="text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full">
-                {rankedCount}/10 {dragPage.rankedStatusText}
-              </span>
-            </h1>
-            <p className="text-sm text-slate-600 mt-1 hidden sm:block">
-              {dragPage.pageHeaderSubtitle}
-            </p>
-          </div>
+      {/* כותרת עליונה פשוטה (הסרנו את התיבה הגדולה)` */}
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900">
+            {dragPage.pageHeaderTitle}
+          </h1>
+          <p className="text-sm text-slate-600 mt-1">
+            {dragPage.pageHeaderSubtitle}
+          </p>
+        </div>
 
+        <div className="hidden sm:flex items-center gap-3">
+          <span className="bg-white px-3 py-1 rounded-full border border-slate-200 shadow-sm text-sm font-semibold">
+            {rankedCount}/10 {dragPage.rankedStatusText}
+          </span>
           <button
             onClick={onGoToInstructions}
-            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-2xl transition-all duration-200 cursor-pointer shrink-0"
+            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-2xl transition-all duration-200 cursor-pointer"
           >
             {dragPage.instructionsButtonText}
           </button>
         </div>
+      </div>
 
-        {/* סרגל קטן עם כפתור הוראות בלבד (מבוגרים אוהבים פשטות) */}
-        <div className="pt-3">
-          <p className="text-sm text-slate-600">{dragPage.pageHeaderSubtitle}</p>
-        </div>
-
-        {/* מתג כרטיסיות מותאם למובייל בלבד (עבור בין מאגר התמונות לסולם) */}
-        <div className="flex lg:hidden bg-slate-100 p-1 rounded-xl gap-1 text-xs font-semibold">
-          <button
-            onClick={() => setMobileTab('pool')}
-            className={`flex-1 py-2 rounded-lg text-center transition-all ${
-              mobileTab === 'pool' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            {dragPage.tabPoolText} ({photos.length})
-          </button>
-          <button
-            onClick={() => setMobileTab('ladder')}
-            className={`flex-1 py-2 rounded-lg text-center transition-all ${
-              mobileTab === 'ladder' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            {dragPage.tabLadderText} ({rankedCount}/10)
-          </button>
-        </div>
+      {/* מתג כרטיסיות מותאם למובייל בלבד (עבור בין מאגר התמונות לסולם) */}
+      <div className="flex lg:hidden bg-slate-100 p-1 rounded-xl gap-1 text-xs font-semibold">
+        <button
+          onClick={() => setMobileTab('pool')}
+          className={`flex-1 py-2 rounded-lg text-center transition-all ${
+            mobileTab === 'pool' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+          }`}
+        >
+          {dragPage.tabPoolText} ({photos.length})
+        </button>
+        <button
+          onClick={() => setMobileTab('ladder')}
+          className={`flex-1 py-2 rounded-lg text-center transition-all ${
+            mobileTab === 'ladder' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+          }`}
+        >
+          {dragPage.tabLadderText} ({rankedCount}/10)
+        </button>
       </div>
 
       {/* תצוגה מרכזית - גרירה כפולה (מאגר + סולם) */}
