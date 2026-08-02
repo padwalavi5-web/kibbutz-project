@@ -156,10 +156,10 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
               return (
                 <div
                   key={photo.id}
-                  className={`bg-white rounded-3xl border p-3 flex flex-col justify-between transition-all duration-200 shadow-sm touch-none ${
+                  className={`festive-card rounded-3xl p-3 flex flex-col justify-between transition-all duration-200 shadow-sm touch-none ${
                     isRanked
-                      ? 'border-slate-300 bg-slate-50 ring-1 ring-slate-200'
-                      : 'border-slate-200'
+                      ? 'border-emerald-200 bg-gradient-to-br from-emerald-50 to-white ring-1 ring-emerald-100'
+                      : 'border-emerald-100 bg-white'
                   }`}
                 >
                   {/* תיבת התמונה */}
@@ -190,21 +190,21 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       {photo.description}
                     </p>
 
-                    <div className="pt-2 border-t border-[#f0ece5] flex items-center gap-2">
+                    <div className="pt-2 border-t border-emerald-50 flex items-center gap-2">
                       {isRanked ? (
                         <button
                           onClick={() => onRemoveFromLadder(photo.id)}
-                          className="w-full py-2 bg-rose-50 hover:bg-rose-100/80 text-rose-700 text-xs font-semibold rounded-xl border border-rose-200 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                          className="w-full py-3 bg-rose-50 hover:bg-rose-100/80 text-rose-700 text-sm font-semibold rounded-xl border border-rose-200 transition-colors flex items-center justify-center gap-2 cursor-pointer"
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <X className="w-4 h-4" />
                           <span>{dragPage.removeFromLadderText}</span>
                         </button>
                       ) : (
                         <button
                           onClick={() => setQuickAssignPhoto(photo)}
-                          className="w-full py-2 bg-slate-900 hover:bg-slate-700 text-white text-xs font-semibold rounded-2xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                          className="w-full btn-large bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-2xl transition-colors flex items-center justify-center gap-3 shadow-md"
                         >
-                          <Plus className="w-3.5 h-3.5 text-slate-200" />
+                          <Plus className="w-4 h-4 text-white" />
                           <span>{dragPage.assignToLadderText}</span>
                         </button>
                       )}

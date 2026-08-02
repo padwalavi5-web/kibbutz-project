@@ -10,7 +10,27 @@ html {
 }
 
 body {
-  background: #f8fafc;
+  background: #f6fdf6; /* חיבור לצבעי ה-theme החגיגיים */
+  color: #0b6b3a;
+}
+
+/* כרטיסים חגיגיים */
+.festive-card {
+  background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(16,185,129,0.02) 100%);
+  border: 1px solid rgba(16,185,129,0.12);
+}
+
+/* כפתורים גדולים ונגישים */
+.btn-large {
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+/* קצת יותר גדול ברירת מחדל לטלפונים */
+@media (max-width: 640px) {
+  html { font-size: 16px; }
+  .line-clamp-2 { line-height: 1.25rem; }
 }
 
 button,
