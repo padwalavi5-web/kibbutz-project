@@ -30,35 +30,35 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
   rankedCount
 }) => {
   return (
-    <nav className="bg-[#faf8f5] border-b border-[#e8e4dc] sticky top-0 z-30 shadow-xs">
+    <nav className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="flex items-center justify-center gap-3 py-2.5">
+        <div className="flex items-center justify-center gap-3 py-3">
           
           {/* הוראות */}
           <button
             onClick={() => onSelectScreen('instructions')}
-            className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
               activeScreen === 'instructions'
-                ? 'bg-[#3d332a] text-[#f7f4ef] shadow-xs'
-                : 'text-[#635548] hover:bg-[#f4f0ea]'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100'
             }`}
           >
-            <FileText className="w-4 h-4 text-[#c79d5f]" />
+            <FileText className="w-4 h-4 text-slate-400" />
             <span>הוראות</span>
           </button>
 
           {/* דירוג תמונות */}
           <button
             onClick={() => onSelectScreen('drag')}
-            className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
               activeScreen === 'drag'
-                ? 'bg-[#3d332a] text-[#f7f4ef] shadow-xs'
-                : 'text-[#635548] hover:bg-[#f4f0ea]'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100'
             }`}
           >
-            <MoveHorizontal className="w-4 h-4 text-[#c79d5f]" />
+            <MoveHorizontal className="w-4 h-4 text-slate-400" />
             <span>דירוג תמונות ה-60</span>
-            <span className="bg-[#f4f0ea] text-[#7a5d37] border border-[#ded8ce] text-[11px] px-2.5 py-0.5 rounded-full font-bold">
+            <span className="bg-slate-100 text-slate-600 text-[11px] px-2.5 py-0.5 rounded-full font-bold">
               {rankedCount}/10
             </span>
           </button>

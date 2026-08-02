@@ -60,13 +60,13 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-[#fefcf9] border border-[#e8e4dc] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative text-[#2d241d] text-center space-y-6 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+      <div className="bg-white border border-slate-200 rounded-[2rem] max-w-lg w-full p-6 sm:p-8 shadow-[0_30px_80px_rgba(15,23,42,0.12)] relative text-slate-900 text-center space-y-6 max-h-[90vh] overflow-y-auto">
         
         {/* כפתור סגירה */}
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 w-9 h-9 rounded-full bg-[#f4f0ea] hover:bg-[#eae4d8] text-[#635548] font-bold flex items-center justify-center transition-colors cursor-pointer"
+          className="absolute top-4 left-4 w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
           title="סגירה"
         >
           <X className="w-4 h-4" />
@@ -74,57 +74,57 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
 
         {/* אייקון גביע חגיגי וכותרת */}
         <div className="space-y-3">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-tr from-[#ead7ba] via-[#f7ebd9] to-[#dfc499] text-[#7a5d37] shadow-sm">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 text-slate-700 shadow-sm">
             <Trophy className="w-10 h-10" />
           </div>
           
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#2d241d] font-['Heebo']">
+          <h2 className="text-2xl sm:text-3xl font-semibold">
             {modals.submissionTitle}
           </h2>
-          <p className="text-sm font-semibold text-[#8e6e42]">
+          <p className="text-sm font-medium text-slate-600">
             {modals.submissionSubtitle}
           </p>
-          <p className="text-xs sm:text-sm text-[#635548] leading-relaxed max-w-sm mx-auto">
+          <p className="text-sm text-slate-600 leading-relaxed max-w-sm mx-auto">
             {modals.thankYouText}
           </p>
         </div>
 
         {/* הודעת סטטוס שמירה ב-Firebase */}
-        <div className={`p-3.5 rounded-2xl border text-xs sm:text-sm font-semibold transition-all ${
+        <div className={`p-3.5 rounded-3xl border text-sm font-semibold transition-all ${
           isSaving 
-            ? 'bg-amber-50/80 border-amber-300 text-amber-800 animate-pulse'
-            : 'bg-emerald-50/80 border-emerald-300 text-emerald-800'
+            ? 'bg-slate-100 border-slate-200 text-slate-700 animate-pulse'
+            : 'bg-slate-100 border-slate-200 text-slate-700'
         }`}>
           <div className="flex items-center justify-center gap-2">
-            {!isSaving && <CheckCircle className="w-4 h-4 shrink-0" />}
+            {!isSaving && <CheckCircle className="w-4 h-4 shrink-0 text-slate-700" />}
             <span>{isSaving ? "שומר את הדירוג במסד הנתונים..." : saveMessage || "הדירוג נשמר בהצלחה!"}</span>
           </div>
         </div>
 
         {/* סיכום הניקוד הכולל ו-3 התמונות המובילות */}
-        <div className="bg-[#faf8f5] border border-[#ece7de] rounded-2xl p-4 text-right space-y-3">
-          <div className="flex items-center justify-between border-b border-[#ece7de] pb-2.5">
-            <span className="font-bold text-[#2d241d] text-sm">
+        <div className="bg-slate-50 border border-slate-200 rounded-3xl p-4 text-right space-y-3">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <span className="font-semibold text-slate-900 text-sm">
               {modals.summaryTitle}
             </span>
-            <span className="bg-[#3d332a] text-[#f7f4ef] font-bold text-xs px-3 py-1 rounded-full">
+            <span className="bg-slate-900 text-white font-semibold text-xs px-3 py-1 rounded-full">
               {voteResult.totalPointsAssigned} {modals.pointsText}
             </span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             {voteResult.ladder.slice(0, 3).map((item, idx) => {
               const photo = allPhotos.find((p) => p.id === item.photoId);
               const medal = idx === 0 ? '#1' : idx === 1 ? '#2' : '#3';
               return (
-                <div key={item.rank} className="flex items-center justify-between bg-white p-2.5 rounded-xl border border-[#ece7de] text-xs sm:text-sm">
-                  <div className="flex items-center gap-2.5 truncate">
-                    <span className="font-extrabold text-[#7a5d37] w-6 text-center">{medal}</span>
-                    <span className="font-bold text-[#2d241d] truncate">
+                <div key={item.rank} className="flex items-center justify-between bg-white p-3 rounded-3xl border border-slate-200 text-sm shadow-sm">
+                  <div className="flex items-center gap-3 truncate">
+                    <span className="font-semibold text-slate-700 w-8 text-center">{medal}</span>
+                    <span className="font-semibold text-slate-900 truncate">
                       {photo ? photo.title : item.title}
                     </span>
                   </div>
-                  <span className="font-bold text-[#8e6e42] shrink-0">
+                  <span className="font-semibold text-slate-700 shrink-0">
                     +{item.points} {modals.pointsText}
                   </span>
                 </div>
@@ -134,38 +134,38 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
         </div>
 
         {/* כפתורי שיתוף ב-WhatsApp והעתקה */}
-        <div className="space-y-2.5 pt-1">
+        <div className="space-y-3 pt-1">
           <button
             onClick={handleWhatsAppShare}
-            className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-2xl shadow-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm rounded-3xl shadow-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
           >
             <Share2 className="w-4 h-4" />
             <span>{modals.shareWhatsAppText}</span>
           </button>
-
+ 
           <button
             onClick={handleCopyShareText}
-            className="w-full py-3 bg-[#f4f0ea] hover:bg-[#eae4d8] text-[#5e4b3c] font-semibold text-xs sm:text-sm rounded-2xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-3xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Copy className="w-4 h-4 text-[#7a5d37]" />
+            <Copy className="w-4 h-4 text-slate-500" />
             <span>{copied ? modals.copiedText : modals.copySummaryText}</span>
           </button>
         </div>
 
         {/* כפתורים נוספים: צפייה בתוצאות הקהילה (למנהל) או התחלה מחדש */}
-        <div className="pt-3 flex items-center justify-between gap-3 border-t border-[#f0ece5] text-xs sm:text-sm">
+        <div className="pt-3 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100 text-sm">
           <button
             onClick={onOpenCommunityStats}
-            className="text-[#7a5d37] font-bold hover:text-[#5e4b3c] flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="text-slate-700 font-semibold hover:text-slate-900 flex items-center gap-2 cursor-pointer transition-colors"
             title="כניסה למנהלי האפליקציה בלבד"
           >
             <BarChart3 className="w-4 h-4" />
             <span>{modals.communityStatsButton}</span>
           </button>
-
+ 
           <button
             onClick={onReset}
-            className="text-[#8e8275] hover:text-rose-700 font-semibold flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="text-slate-500 hover:text-slate-900 font-semibold flex items-center gap-2 cursor-pointer transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>{modals.redraftButton}</span>
