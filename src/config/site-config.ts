@@ -14,10 +14,11 @@
 export const SITE_CONFIG = {
   // --- עיצוב וצבעי האתר (אופציונלי לשינוי) ---
   theme: {
-    primaryColor: "#2c2017",      // צבע כהה ראשי (כותרות, כפתורים)
-    accentColor: "#a37021",       // צבע זהב/חום (הדגשות, אייקונים)
-    buttonTextColor: "#f7e6cc",   // צבע טקסט על כפתורים כהים
-    pageBackground: "#f1f5f9",    // צבע רקע כללי
+    // עדכון לפלטת צבעים חגיגית בגווני ירוק — מתאים למראה שמח אך מקצועי
+    primaryColor: "#0b6b3a",      // ירוק כהה לכותרות וכפתורים
+    accentColor: "#10b981",       // ירוק בוהק להדגשות
+    buttonTextColor: "#ffffff",   // טקסט לבן על כפתורים בצבע
+    pageBackground: "#f6fdf6",    // רקע בהיר עם רמז לירוק
     fontFamily: "'Rubik', 'Assistant', sans-serif"
   },
 
@@ -70,13 +71,13 @@ export const SITE_CONFIG = {
     tabPoolText: "מאגר",
     tabLadderText: "סולם",
     poolTitle: "מאגר התמונות",
-    poolSubtitle: "גררו או לחצו על תמונה כדי לשבץ אותה בסולם",
+    poolSubtitle: "לחצו על 'שבץ בסולם' בכל תמונה כדי לבחור מקום בסולם",
     ladderTitle: "סולם הדירוג",
-    ladderSubtitle: "סדרו את 10 התמונות הנבחרות לפי סדר החשיבות",
+    ladderSubtitle: "סמנו את 10 התמונות החשובות - ניתן להזיז ולהסיר בתוך הסולם",
     submitButtonText: "אישור ושליחת דירוג",
     resetButtonText: "איפוס דירוג",
-    emptySlotText: "גררו לכאן תמונה מהמאגר",
-    dragBadgeText: "גרור",
+    emptySlotText: "הקשו על תמונה במאגר כדי לשבץ",
+    dragBadgeText: "לחץ לשיבוץ",
     rankBadgePrefix: "מקום #",
     removeFromLadderText: "הסר מסולם",
     assignToLadderText: "שבץ בסולם",
@@ -84,7 +85,8 @@ export const SITE_CONFIG = {
     quickAssignTitlePrefix: "בחירת מקום בסולם עבור:",
     quickAssignSubtitle: "בחרו את הדרגה (מקום 1 עד מקום 10) שבה תרצו לשבץ את התמונה:",
     freeSlotText: "פנוי",
-    cancelButtonText: "ביטול"
+    cancelButtonText: "ביטול",
+    openLadderButtonText: "פתח את סולם הדירוג"
   },
 
   // --- 10 הדרגות בסולם הדירוג ---

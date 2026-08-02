@@ -7,11 +7,11 @@
  * תצוגה ניידת נוחה (טאבים ניידים / תצוגה כפולה למסכים רחבים), וכפתורי שיבוץ מהירים.
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Photo, LadderSlot } from '../types';
 import { SITE_CONFIG } from '../content';
 import { ImageBox } from './ImageBox';
-import { Plus, X, ArrowUp, ArrowDown, RefreshCw, Send, MoveLeft, Info, Grid, List, GripVertical } from 'lucide-react';
+import { Plus, X, RefreshCw, Send, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface ScreenDualDragProps {
   /** מערך התמונות במאגר */
@@ -44,15 +44,10 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
 }) => {
   const { dragPage } = SITE_CONFIG;
 
-  // 1. ניהול גרירה במחשב ובנייד
-  const [draggedPhotoId, setDraggedPhotoId] = useState<string | null>(null);
-  const [touchPos, setTouchPos] = useState<{ x: number; y: number } | null>(null);
-  const [draggedPhotoTitle, setDraggedPhotoTitle] = useState<string>('');
-
-  // 2. ניהול תצוגת המסך במובייל ('pool' | 'ladder')
+  // 1. הסרנו את אפשרות הגרירה — משתמשים בקישורי שיבוץ גדולים וברורים
   const [mobileTab, setMobileTab] = useState<'pool' | 'ladder'>('pool');
 
-  // 3. ניהול מודל שיבוץ מהיר למובייל (בעת לחיצה על תמונה)
+  // 2. מודל שיבוץ מהיר (כאשר לוחצים על כפתור "שבץ")
   const [quickAssignPhoto, setQuickAssignPhoto] = useState<Photo | null>(null);
 
   // ספירת תמונות שדורגו
@@ -60,14 +55,8 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
   const isLadderFull = rankedCount >= 10;
 
   const handleAssignToLadderInternal = (photoId: string, targetRank?: number) => {
-    const wasRanked = getPhotoRank(photoId) !== null;
-    const nextRankedCount = wasRanked ? rankedCount : rankedCount + 1;
-
     onAssignToLadder(photoId, targetRank);
-
-    if (draggedPhotoId && !wasRanked && mobileTab === 'ladder' && nextRankedCount < 10) {
-      setMobileTab('pool');
-    }
+    // אחרי שיבוץ באמצעות הכפתור נשארים במאגר — המשתמש יכול ללחוץ על "פתח סולם" למעבר
   };
 
   /**
@@ -84,57 +73,6 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
   const getPhotoById = (photoId: string | null): Photo | undefined => {
     if (!photoId) return undefined;
     return photos.find((p) => p.id === photoId);
-  };
-
-  /**
-   * טיפול בתחילת גרירה במגע (Touch Start)
-   */
-  const handleTouchStart = (photo: Photo, e: React.TouchEvent) => {
-    const touch = e.touches[0];
-    setDraggedPhotoId(photo.id);
-    setDraggedPhotoTitle(photo.title);
-    setTouchPos({ x: touch.clientX, y: touch.clientY });
-  };
-
-  /**
-   * טיפול בתנועת אצבע (Touch Move)
-   */
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!draggedPhotoId) return;
-    const touch = e.touches[0];
-    setTouchPos({ x: touch.clientX, y: touch.clientY });
-
-    if (!isLadderFull && touch.clientX < window.innerWidth * 0.25 && mobileTab !== 'ladder') {
-      setMobileTab('ladder');
-    }
-  };
-
-  /**
-   * טיפול בסיום גרירה במגע (Touch End)
-   */
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!draggedPhotoId || !touchPos) {
-      setDraggedPhotoId(null);
-      setTouchPos(null);
-      return;
-    }
-
-    const changedTouch = e.changedTouches[0];
-    const dropTarget = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
-
-    if (dropTarget) {
-      const slotElement = dropTarget.closest('[data-slot-rank]');
-      if (slotElement) {
-        const rankAttr = slotElement.getAttribute('data-slot-rank');
-        if (rankAttr) {
-          const targetRank = parseInt(rankAttr, 10);
-          handleAssignToLadderInternal(draggedPhotoId, targetRank);
-        }
-      }
-    }
-
-    setDraggedPhotoId(null);
-    setTouchPos(null);
   };
 
   return (
@@ -163,28 +101,9 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           </button>
         </div>
 
-        {/* מקשי פעולה מהירים ברורים למובייל */}
-        <div className="flex items-center justify-between gap-3 pt-3 border-t border-slate-100">
-          <button
-            onClick={onResetLadder}
-            className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 text-sm font-semibold rounded-2xl transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer"
-          >
-            <RefreshCw className="w-4 h-4" />
-            <span>{dragPage.resetButtonText}</span>
-          </button>
- 
-          <button
-            onClick={onSubmitVote}
-            disabled={rankedCount === 0}
-            className={`flex-1 py-3 rounded-2xl text-sm font-semibold shadow-xs transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
-              rankedCount > 0
-                ? 'bg-slate-900 text-white hover:bg-slate-700 shadow-sm'
-                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-            }`}
-          >
-            <Send className="w-4 h-4" />
-            <span>{dragPage.submitButtonText} ({rankedCount})</span>
-          </button>
+        {/* סרגל קטן עם כפתור הוראות בלבד (מבוגרים אוהבים פשטות) */}
+        <div className="pt-3">
+          <p className="text-sm text-slate-600">{dragPage.pageHeaderSubtitle}</p>
         </div>
 
         {/* מתג כרטיסיות מותאם למובייל בלבד (עבור בין מאגר התמונות לסולם) */}
@@ -207,11 +126,6 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           </button>
         </div>
       </div>
-      {draggedPhotoId && mobileTab === 'pool' && !isLadderFull && (
-        <div className="lg:hidden rounded-3xl border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm font-semibold shadow-sm">
-          גרור שמאלה כדי לפתוח את סולם הדירוג ולהמשיך לשבץ
-        </div>
-      )}
 
       {/* תצוגה מרכזית - גרירה כפולה (מאגר + סולם) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
@@ -233,28 +147,19 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
             </div>
           </div>
 
-          {/* רשת התמונות במאגר */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-h-[650px] overflow-y-auto p-0.5">
+          {/* רשת התמונות במאגר (גרירה מושבתת) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-h-[600px] overflow-y-auto p-0.5">
             {photos.map((photo) => {
               const currentRank = getPhotoRank(photo.id);
               const isRanked = currentRank !== null;
-
+ 
               return (
                 <div
                   key={photo.id}
-                  draggable
-                  onDragStart={(e) => {
-                    setDraggedPhotoId(photo.id);
-                    e.dataTransfer.setData('text/plain', photo.id);
-                  }}
-                  onDragEnd={() => setDraggedPhotoId(null)}
-                  onTouchStart={(e) => handleTouchStart(photo, e)}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
-                  className={`bg-white rounded-3xl border p-3 flex flex-col justify-between transition-all duration-200 shadow-sm cursor-grab active:cursor-grabbing touch-pan-y hover:shadow-lg ${
+                  className={`bg-white rounded-3xl border p-3 flex flex-col justify-between transition-all duration-200 shadow-sm touch-none ${
                     isRanked
                       ? 'border-slate-300 bg-slate-50 ring-1 ring-slate-200'
-                      : 'border-slate-200 hover:border-slate-300'
+                      : 'border-slate-200'
                   }`}
                 >
                   {/* תיבת התמונה */}
@@ -265,9 +170,8 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       className="w-full h-32 rounded-xl overflow-hidden"
                     />
 
-                    <div className="absolute top-2 left-2 bg-black/60 text-white p-1 rounded-md text-[10px] flex items-center gap-1 sm:hidden">
-                      <GripVertical className="w-3.5 h-3.5" />
-                      <span>{dragPage.dragBadgeText}</span>
+                    <div className="absolute top-2 left-2 bg-black/60 text-white p-1 rounded-md text-[11px] sm:hidden">
+                      <span className="font-semibold">{dragPage.dragBadgeText}</span>
                     </div>
 
                     {isRanked && (
@@ -338,18 +242,10 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                 <div
                   key={slot.rank}
                   data-slot-rank={slot.rank}
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    const photoId = e.dataTransfer.getData('text/plain') || draggedPhotoId;
-                    if (photoId) {
-                      onAssignToLadder(photoId, slot.rank);
-                    }
-                  }}
                   className={`p-3 rounded-3xl border transition-all duration-200 flex items-center gap-3 ${
                     photo
                       ? 'bg-slate-50 border-slate-200 shadow-sm'
-                      : 'bg-slate-50 border-dashed border-slate-200 hover:border-slate-300'
+                      : 'bg-slate-50 border-dashed border-slate-200'
                   }`}
                 >
                   {/* מספר הדרגה בסולם */}
@@ -421,24 +317,28 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           </div>
         </div>
 
+        {/* כפתורי פעולה בתחתית המסך (מובייל בלבד) */}
+        <div className="lg:hidden col-span-12 mt-3 px-1">
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => setMobileTab('ladder')}
+              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-2xl shadow-sm text-lg"
+            >
+              {dragPage.tabLadderText}
+            </button>
+            <button
+              onClick={onSubmitVote}
+              disabled={rankedCount === 0}
+              className={`w-full py-3 rounded-2xl text-lg font-semibold transition-colors ${rankedCount>0? 'bg-emerald-500 text-white hover:bg-emerald-600':'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
+            >
+              {dragPage.submitButtonText} {rankedCount>0? `(${rankedCount})` : ''}
+            </button>
+          </div>
+        </div>
+
       </div>
 
       {/* אלמנט תצוגת גרירה צף במגע (Touch Drag Overlay) למכשירים ניידים */}
-      {draggedPhotoId && touchPos && (
-        <div
-          style={{
-            position: 'fixed',
-            left: `${touchPos.x - 60}px`,
-            top: `${touchPos.y - 40}px`,
-            pointerEvents: 'none',
-            zIndex: 9999
-          }}
-          className="bg-slate-900 text-white px-3 py-2 rounded-2xl shadow-2xl font-semibold text-xs border border-slate-800 flex items-center gap-2 opacity-95"
-        >
-          <GripVertical className="w-4 h-4 text-slate-100" />
-          <span>גורר: {draggedPhotoTitle}</span>
-        </div>
-      )}
 
       {/* מודל שיבוץ מהיר למובייל בלחיצה על תמונה */}
       {quickAssignPhoto && (
