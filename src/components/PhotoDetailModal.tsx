@@ -78,7 +78,7 @@ export const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
                 <span>שיבוץ בסולם הדירוג:</span>
               </h3>
               {isRanked && (
-                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                <span className="text-xs font-bold theme-badge">
                   מדורג כעת במקום #{currentSlot.rank}
                 </span>
               )}

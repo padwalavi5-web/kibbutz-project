@@ -158,8 +158,8 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                   key={photo.id}
                   className={`festive-card rounded-3xl p-3 flex flex-col justify-between transition-all duration-200 shadow-sm touch-none ${
                     isRanked
-                      ? 'border-emerald-200 bg-gradient-to-br from-emerald-50 to-white ring-1 ring-emerald-100'
-                      : 'border-emerald-100 bg-white'
+                      ? 'festive-card'
+                     : 'festive-card-empty'
                   }`}
                 >
                   {/* תיבת התמונה */}
@@ -190,7 +190,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       {photo.description}
                     </p>
 
-                    <div className="pt-2 border-t border-emerald-50 flex items-center gap-2">
+                    <div className="pt-2 border-t festive-sep flex items-center gap-2">
                       {isRanked ? (
                         <button
                           onClick={() => onRemoveFromLadder(photo.id)}
@@ -202,7 +202,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       ) : (
                         <button
                           onClick={() => setQuickAssignPhoto(photo)}
-                          className="w-full btn-large bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-2xl transition-colors flex items-center justify-center gap-3 shadow-md"
+                          className="w-full btn-large theme-btn text-sm font-semibold rounded-2xl transition-colors flex items-center justify-center gap-3 shadow-md"
                         >
                           <Plus className="w-4 h-4 text-white" />
                           <span>{dragPage.assignToLadderText}</span>
@@ -322,14 +322,14 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           <div className="flex flex-col gap-3">
             <button
               onClick={() => setMobileTab('ladder')}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-2xl shadow-sm text-lg"
+              className="w-full py-3 theme-btn font-semibold rounded-2xl shadow-sm text-lg"
             >
               {dragPage.tabLadderText}
             </button>
             <button
               onClick={onSubmitVote}
               disabled={rankedCount === 0}
-              className={`w-full py-3 rounded-2xl text-lg font-semibold transition-colors ${rankedCount>0? 'bg-emerald-500 text-white hover:bg-emerald-600':'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
+              className={`w-full py-3 rounded-2xl text-lg font-semibold transition-colors ${rankedCount>0? 'theme-submit':'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
             >
               {dragPage.submitButtonText} {rankedCount>0? `(${rankedCount})` : ''}
             </button>

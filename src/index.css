@@ -14,10 +14,37 @@ body {
   color: #0b6b3a;
 }
 
-/* כרטיסים חגיגיים */
+/* כרטיסים חגיגיים - משתמשים במשתני צבע מה-theme */
 .festive-card {
-  background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(16,185,129,0.02) 100%);
-  border: 1px solid rgba(16,185,129,0.12);
+  background: linear-gradient(135deg, rgba(var(--accent-rgb, 16,185,129), 0.08), rgba(255,255,255,1));
+  border: 1px solid rgba(var(--accent-rgb, 16,185,129), 0.12);
+}
+.festive-card-empty {
+  background: var(--card-bg, #fff);
+  border: 1px solid rgba(var(--primary-rgb, 11,107,58), 0.06);
+}
+.festive-sep { border-color: rgba(var(--accent-rgb,16,185,129),0.06); }
+
+/* כפתורים נושאיים לפי theme */
+.theme-btn {
+  background: var(--primary-color, #0b6b3a);
+  color: var(--button-text-color, #fff);
+  border: 1px solid rgba(var(--primary-rgb,11,107,58),0.12);
+}
+.theme-btn:hover { background: var(--accent-color, #10b981); }
+
+.theme-submit {
+  background: linear-gradient(90deg, var(--accent-color, #10b981), var(--primary-color, #0b6b3a));
+  color: var(--button-text-color, #fff);
+}
+
+.theme-badge {
+  color: var(--primary-color, #0b6b3a);
+  background: rgba(var(--primary-rgb,11,107,58),0.06);
+  border: 1px solid rgba(var(--primary-rgb,11,107,58),0.08);
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  font-weight: 700;
 }
 
 /* כפתורים גדולים ונגישים */
