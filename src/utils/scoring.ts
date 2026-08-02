@@ -97,15 +97,15 @@ export function validateLadderCompletion(ladderSlots: LadderSlot[]): {
 export function generateShareSummary(voteResult: VoteResult, photos: Photo[]): string {
   const top3 = voteResult.ladder.slice(0, 3);
   
-  let text = `🌾 *הדירוג שלי לחג המשק 60 לקיבוץ עלומים!* 🌾\n\n`;
+  let text = `*הדירוג שלי לחג המשק 60 לקיבוץ עלומים!*\n\n`;
   text += `התמונות המובילות שלי בסולם הדירוג:\n`;
   
   top3.forEach((item, index) => {
     const photo = photos.find((p) => p.id === item.photoId);
-    const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉";
-    text += `${medal} מקום ${item.rank}: ${photo ? photo.title : ''} (${photo ? photo.year : ''})\n`;
+    const place = index === 0 ? "#1" : index === 1 ? "#2" : "#3";
+    text += `${place} מקום ${item.rank}: ${photo ? photo.title : ''} (${photo ? photo.year : ''})\n`;
   });
 
-  text += `\nבואו להצביע ולהשפיע גם אתם בתערוכת ה-60! 🎉`;
+  text += `\nבואו להצביע ולהשפיע גם אתם בתערוכת ה-60!`;
   return text;
 }

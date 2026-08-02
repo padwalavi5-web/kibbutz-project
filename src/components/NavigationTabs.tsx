@@ -30,35 +30,35 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
   rankedCount
 }) => {
   return (
-    <nav className="bg-slate-50 border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <nav className="bg-[#faf8f5] border-b border-[#e8e4dc] sticky top-0 z-30 shadow-xs">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="flex items-center justify-center gap-3 py-2">
+        <div className="flex items-center justify-center gap-3 py-2.5">
           
-          {/* דף 1: הוראות */}
+          {/* הוראות */}
           <button
             onClick={() => onSelectScreen('instructions')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
               activeScreen === 'instructions'
-                ? 'bg-[#2c2017] text-[#f7e6cc] shadow-xs'
-                : 'text-slate-600 hover:bg-slate-200/60'
+                ? 'bg-[#3d332a] text-[#f7f4ef] shadow-xs'
+                : 'text-[#635548] hover:bg-[#f4f0ea]'
             }`}
           >
-            <FileText className="w-4 h-4 text-[#e0a84e]" />
-            <span>דף 1: הוראות</span>
+            <FileText className="w-4 h-4 text-[#c79d5f]" />
+            <span>הוראות</span>
           </button>
 
-          {/* דף 2: דף גרירה כפול */}
+          {/* דירוג תמונות */}
           <button
             onClick={() => onSelectScreen('drag')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
               activeScreen === 'drag'
-                ? 'bg-[#2c2017] text-[#f7e6cc] shadow-xs'
-                : 'text-slate-600 hover:bg-slate-200/60'
+                ? 'bg-[#3d332a] text-[#f7f4ef] shadow-xs'
+                : 'text-[#635548] hover:bg-[#f4f0ea]'
             }`}
           >
-            <MoveHorizontal className="w-4 h-4 text-[#e0a84e]" />
-            <span>דף 2: דף גרירה כפול</span>
-            <span className="bg-amber-100 text-[#a37021] text-[11px] px-2 py-0.5 rounded-full font-extrabold">
+            <MoveHorizontal className="w-4 h-4 text-[#c79d5f]" />
+            <span>דירוג תמונות ה-60</span>
+            <span className="bg-[#f4f0ea] text-[#7a5d37] border border-[#ded8ce] text-[11px] px-2.5 py-0.5 rounded-full font-bold">
               {rankedCount}/10
             </span>
           </button>

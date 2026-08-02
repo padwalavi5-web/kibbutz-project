@@ -127,77 +127,77 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
     <div className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 animate-fadeIn pb-24">
       
       {/* סרגל עליון ראשי - מותאם לסלולר */}
-      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-xs flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-2">
+      <div className="bg-white rounded-3xl p-5 border border-[#e8e4dc] shadow-sm flex flex-col gap-4">
+        <div className="flex items-center justify-between gap-3">
           <div>
-            <h1 className="text-lg sm:text-xl font-black text-[#2c2017] flex items-center gap-2">
-              <span>דף גרירת תמונות כפול</span>
-              <span className="text-xs font-bold bg-amber-100 text-[#a37021] px-2.5 py-0.5 rounded-full">
-                {rankedCount}/10 דורגו
+            <h1 className="text-xl sm:text-2xl font-bold text-[#2d241d] font-['Heebo'] flex items-center gap-2.5">
+              <span>{dragPage.pageHeaderTitle}</span>
+              <span className="text-xs font-semibold bg-[#f4f0ea] text-[#7a5d37] border border-[#ded8ce] px-3 py-1 rounded-full">
+                {rankedCount}/10 {dragPage.rankedStatusText}
               </span>
             </h1>
-            <p className="text-xs text-slate-500 mt-0.5 hidden sm:block">
-              גררו תמונות ממאגר התמונות ישירות לתוך משבצות סולם הדירוג (נתמך גם בנייד במגע!)
+            <p className="text-xs sm:text-sm text-[#635548] mt-1 hidden sm:block">
+              {dragPage.pageHeaderSubtitle}
             </p>
           </div>
 
           <button
             onClick={onGoToInstructions}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer shrink-0"
+            className="px-4 py-2 bg-[#f4f0ea] hover:bg-[#eae4d8] text-[#5e4b3c] text-xs sm:text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer shrink-0"
           >
-            הוראות
+            {dragPage.instructionsButtonText}
           </button>
         </div>
 
         {/* מקשי פעולה מהירים ברורים למובייל */}
-        <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between gap-3 pt-3 border-t border-[#f0ece5]">
           <button
             onClick={onResetLadder}
-            className="flex-1 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1 cursor-pointer"
+            className="flex-1 py-2.5 bg-rose-50/80 hover:bg-rose-100/80 text-rose-700 border border-rose-200 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <RefreshCw className="w-3.5 h-3.5" />
-            <span>איפוס דירוג</span>
+            <RefreshCw className="w-4 h-4" />
+            <span>{dragPage.resetButtonText}</span>
           </button>
 
           <button
             onClick={onSubmitVote}
             disabled={rankedCount === 0}
-            className={`flex-1 py-2 rounded-xl text-xs font-extrabold shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+            className={`flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
               rankedCount > 0
-                ? 'bg-[#2c2017] text-[#f7e6cc] hover:bg-[#423124]'
+                ? 'bg-[#3d332a] text-[#f7f4ef] hover:bg-[#524438] shadow-sm'
                 : 'bg-slate-200 text-slate-400 cursor-not-allowed'
             }`}
           >
-            <Send className="w-3.5 h-3.5" />
-            <span>שליחת דירוג ({rankedCount})</span>
+            <Send className="w-4 h-4" />
+            <span>{dragPage.submitButtonText} ({rankedCount})</span>
           </button>
         </div>
 
         {/* מתג כרטיסיות מותאם למובייל בלבד (הצג מאגר / הצג סולם / תצוגה כפולה) */}
-        <div className="flex lg:hidden bg-slate-100 p-1 rounded-xl gap-1 text-xs font-bold">
+        <div className="flex lg:hidden bg-[#f4f0ea] p-1 rounded-xl gap-1 text-xs font-bold">
           <button
             onClick={() => setMobileTab('both')}
             className={`flex-1 py-2 rounded-lg text-center transition-all ${
-              mobileTab === 'both' ? 'bg-white text-[#2c2017] shadow-xs' : 'text-slate-600'
+              mobileTab === 'both' ? 'bg-white text-[#2d241d] shadow-xs' : 'text-[#635548]'
             }`}
           >
-            תצוגה כפולה
+            {dragPage.tabBothText}
           </button>
           <button
             onClick={() => setMobileTab('pool')}
             className={`flex-1 py-2 rounded-lg text-center transition-all ${
-              mobileTab === 'pool' ? 'bg-white text-[#2c2017] shadow-xs' : 'text-slate-600'
+              mobileTab === 'pool' ? 'bg-white text-[#2d241d] shadow-xs' : 'text-[#635548]'
             }`}
           >
-            מאגר ({photos.length})
+            {dragPage.tabPoolText} ({photos.length})
           </button>
           <button
             onClick={() => setMobileTab('ladder')}
             className={`flex-1 py-2 rounded-lg text-center transition-all ${
-              mobileTab === 'ladder' ? 'bg-white text-[#2c2017] shadow-xs' : 'text-slate-600'
+              mobileTab === 'ladder' ? 'bg-white text-[#2d241d] shadow-xs' : 'text-[#635548]'
             }`}
           >
-            סולם ({rankedCount}/10)
+            {dragPage.tabLadderText} ({rankedCount}/10)
           </button>
         </div>
       </div>
@@ -240,10 +240,10 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                   onTouchStart={(e) => handleTouchStart(photo, e)}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
-                  className={`bg-white rounded-xl border p-3 flex flex-col justify-between transition-all duration-200 shadow-xs cursor-grab active:cursor-grabbing touch-pan-y ${
+                  className={`bg-white rounded-2xl border p-3 flex flex-col justify-between transition-all duration-200 shadow-xs cursor-grab active:cursor-grabbing touch-pan-y hover:shadow-sm ${
                     isRanked
-                      ? 'border-amber-400 bg-amber-50/20 ring-1 ring-amber-300'
-                      : 'border-slate-200 hover:border-slate-400'
+                      ? 'border-[#c79d5f] bg-[#fdfaf5] ring-1 ring-[#e4cfab]'
+                      : 'border-[#e8e4dc] hover:border-[#ded8ce]'
                   }`}
                 >
                   {/* תיבת התמונה */}
@@ -251,46 +251,46 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                     <ImageBox
                       src={photo.imageUrl}
                       alt={photo.title}
-                      className="w-full h-32 rounded-lg"
+                      className="w-full h-32 rounded-xl overflow-hidden"
                     />
 
                     <div className="absolute top-2 left-2 bg-black/60 text-white p-1 rounded-md text-[10px] flex items-center gap-1 sm:hidden">
                       <GripVertical className="w-3.5 h-3.5" />
-                      <span>גרור</span>
+                      <span>{dragPage.dragBadgeText}</span>
                     </div>
 
                     {isRanked && (
-                      <span className="absolute top-2 right-2 bg-[#2c2017] text-[#f7e6cc] text-[11px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                        מקום #{currentRank}
+                      <span className="absolute top-2 right-2 bg-[#3d332a] text-[#f7f4ef] text-[11px] font-semibold px-2 py-0.5 rounded-md shadow-xs">
+                        {dragPage.rankBadgePrefix}{currentRank}
                       </span>
                     )}
                   </div>
 
                   {/* טקסט וכפתורי פעולה */}
                   <div className="space-y-2">
-                    <h3 className="font-bold text-sm text-[#2c2017]">
+                    <h3 className="font-bold text-sm text-[#2d241d] font-['Heebo']">
                       {photo.title}
                     </h3>
-                    <p className="text-xs text-slate-500 line-clamp-2">
+                    <p className="text-xs text-[#635548] line-clamp-2 leading-relaxed">
                       {photo.description}
                     </p>
 
-                    <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
+                    <div className="pt-2 border-t border-[#f0ece5] flex items-center gap-2">
                       {isRanked ? (
                         <button
                           onClick={() => onRemoveFromLadder(photo.id)}
-                          className="w-full py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold rounded-xl border border-rose-200 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                          className="w-full py-2 bg-rose-50 hover:bg-rose-100/80 text-rose-700 text-xs font-semibold rounded-xl border border-rose-200 transition-colors flex items-center justify-center gap-1 cursor-pointer"
                         >
                           <X className="w-3.5 h-3.5" />
-                          <span>הסר מסולם</span>
+                          <span>{dragPage.removeFromLadderText}</span>
                         </button>
                       ) : (
                         <button
                           onClick={() => setQuickAssignPhoto(photo)}
-                          className="w-full py-2 bg-[#2c2017] hover:bg-[#423124] text-[#f7e6cc] text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                          className="w-full py-2 bg-[#3d332a] hover:bg-[#524438] text-[#f7f4ef] text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-1 cursor-pointer shadow-xs"
                         >
-                          <Plus className="w-3.5 h-3.5 text-[#e0a84e]" />
-                          <span>שבץ בסולם</span>
+                          <Plus className="w-3.5 h-3.5 text-[#c79d5f]" />
+                          <span>{dragPage.assignToLadderText}</span>
                         </button>
                       )}
                     </div>
@@ -303,23 +303,23 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
 
         {/* עמודה 2: סולם הדירוג - 10 מקומות */}
         <div
-          className={`lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 space-y-3 sm:space-y-4 shadow-xs ${
+          className={`lg:col-span-5 bg-white border border-[#e8e4dc] rounded-3xl p-4 sm:p-5 space-y-4 shadow-sm ${
             mobileTab === 'pool' ? 'hidden lg:block' : 'block'
           }`}
         >
-          <div className="border-b pb-2.5 border-slate-200 flex items-center justify-between">
+          <div className="border-b pb-3 border-[#f0ece5] flex items-center justify-between">
             <div>
-              <h2 className="font-extrabold text-base sm:text-lg text-[#2c2017]">
+              <h2 className="font-extrabold text-base sm:text-lg text-[#2d241d] font-['Heebo']">
                 {dragPage.ladderTitle}
               </h2>
-              <p className="text-[11px] sm:text-xs text-slate-500">
+              <p className="text-[11px] sm:text-xs text-[#635548]">
                 {dragPage.ladderSubtitle}
               </p>
             </div>
           </div>
 
           {/* 10 המשבצות בסולם */}
-          <div className="space-y-2.5 max-h-[650px] overflow-y-auto p-0.5">
+          <div className="space-y-3 max-h-[650px] overflow-y-auto p-0.5">
             {ladderSlots.map((slot) => {
               const photo = getPhotoById(slot.photoId);
 
@@ -335,16 +335,15 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       onAssignToLadder(photoId, slot.rank);
                     }
                   }}
-                  className={`p-2.5 sm:p-3 rounded-xl border transition-all duration-200 flex items-center gap-2.5 sm:gap-3 ${
+                  className={`p-3 rounded-2xl border transition-all duration-200 flex items-center gap-3 ${
                     photo
-                      ? 'bg-amber-50/70 border-amber-300 shadow-xs'
-                      : 'bg-slate-50 border-dashed border-slate-300 hover:border-slate-400'
+                      ? 'bg-[#fdfaf5] border-[#dfcca7] shadow-xs'
+                      : 'bg-[#faf8f5] border-dashed border-[#ded8ce] hover:border-[#c9bfae]'
                   }`}
                 >
-                  {/* מספר הדרגה והאייקון */}
-                  <div className="flex flex-col items-center justify-center w-8 sm:w-10 shrink-0">
-                    <span className="text-base sm:text-lg">{slot.badge}</span>
-                    <span className="text-[10px] sm:text-[11px] font-black text-[#2c2017]">
+                  {/* מספר הדרגה בסולם */}
+                  <div className="flex flex-col items-center justify-center w-9 sm:w-10 shrink-0">
+                    <span className="text-sm sm:text-base font-extrabold text-[#3d332a]">
                       #{slot.rank}
                     </span>
                   </div>
@@ -352,26 +351,26 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                   {/* תוכן המשבצת בסולם */}
                   <div className="flex-1 min-w-0">
                     {photo ? (
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-3">
                         <ImageBox
                           src={photo.imageUrl}
                           alt={photo.title}
-                          className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg shrink-0"
+                          className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl shrink-0 overflow-hidden"
                         />
                         <div className="min-w-0 flex-1">
-                          <h4 className="font-bold text-xs text-[#2c2017] truncate">
+                          <h4 className="font-bold text-xs sm:text-sm text-[#2d241d] font-['Heebo'] truncate">
                             {photo.title}
                           </h4>
-                          <p className="text-[11px] text-slate-500 truncate hidden sm:block">
+                          <p className="text-[11px] text-[#635548] truncate hidden sm:block">
                             {photo.description}
                           </p>
-                          <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded mt-0.5 inline-block">
-                            {slot.points} נקודות
+                          <span className="text-[10px] font-semibold text-[#6d5635] bg-[#f4f0ea] px-2 py-0.5 rounded-md mt-1 inline-block border border-[#e4dcce]">
+                            {slot.points} {dragPage.pointsText}
                           </span>
                         </div>
                       </div>
                     ) : (
-                      <div className="py-2.5 text-center text-xs text-slate-400 font-medium">
+                      <div className="py-3 text-center text-xs text-[#8e8275] font-medium">
                         {dragPage.emptySlotText}
                       </div>
                     )}
@@ -383,14 +382,14 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       <button
                         onClick={() => onMoveSlot(slot.rank, 'up')}
                         disabled={slot.rank === 1}
-                        className="p-1 hover:bg-slate-200 text-slate-600 rounded disabled:opacity-30 cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        className="p-1 hover:bg-[#eae4d8] text-[#5e4b3c] rounded-lg disabled:opacity-30 cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
                         title="הזז למעלה"
                       >
                         <ArrowUp className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => onRemoveFromLadder(photo.id)}
-                        className="p-1 hover:bg-rose-100 text-rose-600 rounded cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        className="p-1 hover:bg-rose-100/80 text-rose-600 rounded-lg cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
                         title="הסר ממיקום זה"
                       >
                         <X className="w-4 h-4" />
@@ -398,7 +397,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       <button
                         onClick={() => onMoveSlot(slot.rank, 'down')}
                         disabled={slot.rank === 10}
-                        className="p-1 hover:bg-slate-200 text-slate-600 rounded disabled:opacity-30 cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        className="p-1 hover:bg-[#eae4d8] text-[#5e4b3c] rounded-lg disabled:opacity-30 cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
                         title="הזז למטה"
                       >
                         <ArrowDown className="w-4 h-4" />
@@ -432,25 +431,25 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
 
       {/* מודל שיבוץ מהיר למובייל בלחיצה על תמונה */}
       {quickAssignPhoto && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-3 animate-fadeIn">
-          <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-5 shadow-2xl relative space-y-4">
-            <div className="flex items-center justify-between border-b pb-3 border-slate-200">
-              <h3 className="font-extrabold text-base text-[#2c2017]">
-                בחירת מקום בסולם עבור: {quickAssignPhoto.title}
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-3 animate-fadeIn">
+          <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#e8e4dc] relative space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-[#f0ece5]">
+              <h3 className="font-extrabold text-base text-[#2d241d] font-['Heebo']">
+                {dragPage.quickAssignTitlePrefix} {quickAssignPhoto.title}
               </h3>
               <button
                 onClick={() => setQuickAssignPhoto(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold cursor-pointer"
+                className="w-8 h-8 rounded-full bg-[#f4f0ea] hover:bg-[#eae4d8] flex items-center justify-center text-[#635548] font-bold cursor-pointer transition-colors"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-xs text-slate-600">
-              בחרו את הדרגה (מקום 1 עד מקום 10) שבה תרצו לשבץ את התמונה:
+            <p className="text-xs sm:text-sm text-[#635548] leading-relaxed">
+              {dragPage.quickAssignSubtitle}
             </p>
 
-            <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto p-1">
+            <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto p-1">
               {ladderSlots.map((slot) => {
                 const occupant = getPhotoById(slot.photoId);
                 return (
@@ -460,14 +459,13 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       onAssignToLadder(quickAssignPhoto.id, slot.rank);
                       setQuickAssignPhoto(null);
                     }}
-                    className="p-2.5 bg-slate-50 hover:bg-[#2c2017] hover:text-[#f7e6cc] text-[#2c2017] border border-slate-200 rounded-xl text-xs font-bold transition-all text-right flex items-center justify-between cursor-pointer"
+                    className="p-3 bg-[#faf8f5] hover:bg-[#3d332a] hover:text-[#f7f4ef] text-[#2d241d] border border-[#e8e4dc] rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 text-right flex items-center justify-between cursor-pointer shadow-xs"
                   >
-                    <span className="flex items-center gap-1.5">
-                      <span>{slot.badge}</span>
-                      <span>#{slot.rank}</span>
+                    <span className="flex items-center gap-1.5 font-bold">
+                      <span>מקום #{slot.rank}</span>
                     </span>
-                    <span className="text-[10px] opacity-70 truncate max-w-[90px]">
-                      {occupant ? occupant.title : 'פנוי'}
+                    <span className="text-[11px] opacity-75 truncate max-w-[90px]">
+                      {occupant ? occupant.title : dragPage.freeSlotText}
                     </span>
                   </button>
                 );
@@ -476,9 +474,9 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
 
             <button
               onClick={() => setQuickAssignPhoto(null)}
-              className="w-full py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+              className="w-full py-3 bg-[#f4f0ea] hover:bg-[#eae4d8] text-[#5e4b3c] font-semibold text-xs sm:text-sm rounded-2xl transition-colors cursor-pointer"
             >
-              ביטול
+              {dragPage.cancelButtonText}
             </button>
           </div>
         </div>

@@ -19,6 +19,7 @@ import { ScreenDualDrag } from './components/ScreenDualDrag';
 import { PhotoDetailModal } from './components/PhotoDetailModal';
 import { SubmissionModal } from './components/SubmissionModal';
 import { CommunityStatsModal } from './components/CommunityStatsModal';
+import { AdminLoginModal } from './components/AdminLoginModal';
 
 export default function App() {
   // 1. ניהול מסך פעיל ('instructions' | 'drag')
@@ -29,7 +30,13 @@ export default function App() {
     const saved = localStorage.getItem('kibbutz_current_ladder');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // ניקוי אימוג'ים ישנים שנשמרו ב-localStorage בגרסאות קודמות
+        return parsed.map((slot: LadderSlot) => ({
+          ...slot,
+          badge: "",
+          title: `מקום ${slot.rank}`
+        }));
       } catch (e) {
         console.error("שגיאה בטעינת דירוג שמור:", e);
       }
@@ -39,7 +46,7 @@ export default function App() {
       title: item.title,
       points: item.points,
       photoId: null,
-      badge: item.badge
+      badge: ""
     }));
   });
 
@@ -51,8 +58,9 @@ export default function App() {
   const [isSavingVote, setIsSavingVote] = useState<boolean>(false);
   const [saveStatusMessage, setSaveStatusMessage] = useState<string>('');
 
-  // 5. ניהול חלונית תוצאות הקהילה
+  // 5. ניהול חלונית תוצאות הקהילה וכניסת מנהל
   const [showCommunityStats, setShowCommunityStats] = useState<boolean>(false);
+  const [showAdminLogin, setShowAdminLogin] = useState<boolean>(false);
 
   // שמירת מצב הדירוג ב-localStorage
   useEffect(() => {
@@ -238,12 +246,23 @@ export default function App() {
           }}
           onOpenCommunityStats={() => {
             setVoteResult(null);
+            setShowAdminLogin(true);
+          }}
+        />
+      )}
+
+      {/* מודל כניסת מנהלים */}
+      {showAdminLogin && (
+        <AdminLoginModal
+          onClose={() => setShowAdminLogin(false)}
+          onSuccess={() => {
+            setShowAdminLogin(false);
             setShowCommunityStats(true);
           }}
         />
       )}
 
-      {/* מודל תוצאות קהילתיות */}
+      {/* מודל תוצאות קהילתיות (למנהלי מערכת בלבד) */}
       {showCommunityStats && (
         <CommunityStatsModal
           photos={PHOTOS_DATA}
@@ -251,9 +270,17 @@ export default function App() {
         />
       )}
 
-      {/* פוטר תחתון */}
-      <footer className="bg-[#2c2017] text-[#e8d7bb] text-center py-4 text-xs border-t border-slate-700 mt-auto">
-        <p>מערכת דירוג תמונות | דף הוראות + דף גרירה כפול 🌾</p>
+      {/* פוטר תחתון נקי */}
+      <footer className="bg-[#2d241d] text-[#e8d7bb] py-4 px-4 text-xs border-t border-[#3d332a] mt-auto">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-right">
+          <p>מערכת דירוג תמונות ה-60 | קיבוץ עלומים</p>
+          <button
+            onClick={() => setShowAdminLogin(true)}
+            className="text-[#c79d5f] hover:text-[#e4cfab] font-semibold transition-colors cursor-pointer"
+          >
+            {SITE_CONFIG.admin.footerLinkText}
+          </button>
+        </div>
       </footer>
 
     </div>

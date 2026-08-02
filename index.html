@@ -1,159 +1,17 @@
 <!doctype html>
-<html lang='he' dir='rtl' class='scroll-smooth'>
+<html lang="he" dir="rtl">
   <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <title>חג המשק 60 - דירוג תמונות קיבוץ עלומים</title>
-    <link rel='preconnect' href='https://fonts.googleapis.com' />
-    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
-    <link href='https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Heebo:wght@300;400;600;700;800;900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap' rel='stylesheet' />
-    <script src='https://cdn.tailwindcss.com'></script>
-    <script src='https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js'></script>
-    <style>
-      body {
-        font-family: 'Rubik', 'Assistant', sans-serif;
-        background: radial-gradient(circle at top left, rgba(251, 191, 36, 0.16), transparent 34%), linear-gradient(180deg, #fdf7ec 0%, #f3e6d1 48%, #e3c39d 100%);
-      }
-      .app-shell {
-        min-height: 100vh;
-      }
-      .screen {
-        display: none;
-      }
-      .screen.active {
-        display: block;
-      }
-      .photo-card {
-        min-height: 14rem;
-      }
-      .drag-over {
-        outline: 3px dashed rgba(234, 179, 8, 0.8);
-      }
-      .slot-empty {
-        opacity: 0.65;
-      }
-      .rounded-glow {
-        box-shadow: 0 24px 80px rgba(44, 32, 23, 0.12);
-      }
-      .swap-highlight {
-        border-color: #d7b16b;
-      }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>חג המשק 60 לקיבוץ עלומים - דירוג תמונות היסטוריות</title>
+    <!-- Google Fonts for Hebrew Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Heebo:wght@300;400;600;700;800;900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Varela+Round&display=swap" rel="stylesheet">
   </head>
-  <body class='bg-[#f8f1e8] text-[#2c2017] antialiased'>
-    <div class='app-shell max-w-6xl mx-auto px-4 py-5 sm:px-6 sm:py-6'>
-      <header class='mb-6 overflow-hidden rounded-[2rem] border border-[#f0debe] bg-white/90 p-5 shadow-glow relative'>
-        <div class='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(245,158,11,0.14),_transparent_24%)]'></div>
-        <div class='relative'>
-          <p class='text-xs uppercase tracking-[0.24em] text-[#b3740d] mb-3'>חג המשק 60 לקיבוץ עלומים</p>
-          <h1 class='text-3xl sm:text-4xl font-black leading-tight text-[#2e2218] max-w-3xl'>דירוג תמונות היסטוריות - משחק זיכרון וחגיגה משותפת</h1>
-          <p class='mt-4 max-w-2xl text-sm leading-7 text-[#5b4f47]'>הסעו את חוליית הזיכרונות על ידי דירוג 15 תמונות היסטוריות. גררו אותן לסולם 10 המקומות, החליפו סדר ושתפו את ההצבעה שלכם.</p>
-        </div>
-      </header>
-
-      <main id='app' class='space-y-6'>
-        <section id='screen-intro' class='screen active'>
-          <div class='grid gap-5 lg:grid-cols-[1.4fr_1fr]'>
-            <div class='space-y-5'>
-              <div class='rounded-[2rem] border border-[#f1e2c4] bg-[#fff7eb] p-6 shadow-glow'>
-                <h2 class='text-2xl font-bold text-[#2e2218]'>איך מצביעים?</h2>
-                <ol class='mt-4 space-y-3 text-[#5b4f47]'>
-                  <li class='flex gap-3'><span class='font-black text-[#b3740d]'>1.</span> עיינו ב-15 התמונות ההיסטוריות.</li>
-                  <li class='flex gap-3'><span class='font-black text-[#b3740d]'>2.</span> גררו תמונה למקום המתאים בסולם 10 הדירוגים.</li>
-                  <li class='flex gap-3'><span class='font-black text-[#b3740d]'>3.</span> החליפו בין תמונות, החזירו למאגר ושלחו את ההצבעה.</li>
-                </ol>
-                <p class='mt-4 text-sm text-[#6c5e51]'>תמונה מחוץ לסולם תקבל 0 נקודות. כל דרגה מקבלת ניקוד מדורג: 10 עד 1.</p>
-              </div>
-              <button id='start-vote-btn' class='inline-flex items-center justify-center rounded-full bg-[#c4903e] px-6 py-3 text-sm font-bold text-white shadow-glow transition hover:bg-[#ab782f]'>התחל הצבעה</button>
-            </div>
-            <div class='grid gap-4'>
-              <div class='rounded-[2rem] border border-[#f3e3cb] bg-[#fffefa] p-5 shadow-glow'>
-                <h3 class='text-lg font-bold text-[#2e2218]'>מה מחכה לכם?</h3>
-                <ul class='mt-4 space-y-3 text-[#5b4f47]'>
-                </ul>
-              </div>
-              <div class='overflow-hidden rounded-[2rem] border border-[#f3e3cb] shadow-glow'>
-                <img src='https://images.unsplash.com/photo-1526539799696-3e22879a414c?auto=format&fit=crop&w=900&q=80' alt='תמונת קיבוץ חגיגית' class='h-72 w-full object-cover' />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id='screen-pool' class='screen'>
-          <div class='flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
-            <div class='space-y-3'>
-              <h2 class='text-2xl font-black text-[#2e2218]'>בחרו תמונות וגררו אותן לסולם הדירוג</h2>
-              <p class='max-w-2xl text-sm leading-6 text-[#5b4f47]'>גרירה ממאגר התמונות תעביר אתכם במהירות לסולם. ניתן גם לשלוח מהמסך הזה לעמוד הסולם בלחיצה.</p>
-            </div>
-            <button id='go-to-ladder-btn' class='inline-flex items-center gap-2 rounded-full bg-[#2c2017] px-5 py-3 text-sm font-bold text-white shadow-glow hover:bg-[#423124]'>עברו לסולם</button>
-          </div>
-          <div class='mt-6 grid gap-5 lg:grid-cols-3'>
-            <div class='rounded-[2rem] border border-[#e9d7b2] bg-white p-5 shadow-glow'>
-              <div class='flex items-center gap-3'>
-                <span class='inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#fde4a9] text-[#a3630d]'>15</span>
-                <div>
-                  <p class='text-xs uppercase text-[#b3740d] font-semibold'>תמונות זמינות</p>
-                  <p class='mt-1 text-sm text-[#5b4f47]'>בחרו תמונה וגררו אותה לסולם הדירוג.</p>
-                </div>
-              </div>
-            </div>
-            <div class='rounded-[2rem] border border-[#e9d7b2] bg-white p-5 shadow-glow'>
-              <div class='flex items-center gap-3'>
-                <span class='inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f6e4d5] text-[#7b5f36]'>10</span>
-                <div>
-                  <p class='text-xs uppercase text-[#b3740d] font-semibold'>מקומות בסולם</p>
-                  <p class='mt-1 text-sm text-[#5b4f47]'>10 דרגות בדירוג, כל תמונה מקבלת ניקוד.</p>
-                </div>
-              </div>
-            </div>
-            <div class='rounded-[2rem] border border-[#e9d7b2] bg-white p-5 shadow-glow'>
-              <div class='flex items-center gap-3'>
-                <span class='inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#e7f3fc] text-[#155e86]'>↔</span>
-                <div>
-                  <p class='text-xs uppercase text-[#b3740d] font-semibold'>החלפה חופשית</p>
-                  <p class='mt-1 text-sm text-[#5b4f47]'>ניתן להחליף תמונות בין דרגות או להחזיר אותן למאגר בכל עת.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class='mt-8 rounded-[2rem] border border-[#e8d6b2] bg-[#fffdfa] p-5 shadow-glow'>
-            <div id='photo-pool' class='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'></div>
-          </div>
-        </section>
-
-        <section id='screen-ladder' class='screen'>
-          <div class='flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
-            <div class='space-y-3'>
-              <p class='uppercase tracking-[0.2em] text-[#b3740d] text-xs font-bold'>מסך 2 | סולם דירוג</p>
-              <h2 class='text-2xl font-black text-[#2e2218]'>סדרו את התמונות לפי חשיבות</h2>
-              <p class='max-w-2xl text-sm leading-6 text-[#5b4f47]'>גררו תמונה אל המקום המתאים בסולם או חזרו למאגר כדי לשנות את הבחירה.</p>
-            </div>
-            <div class='flex flex-wrap gap-3'>
-              <button id='back-to-pool-btn' class='inline-flex items-center gap-2 rounded-full bg-[#f7e4d0] px-5 py-3 text-sm font-bold text-[#4f3c1a] shadow-glow hover:bg-[#e7cfb2]'>← חזור למאגר</button>
-              <button id='submit-vote-btn' class='inline-flex items-center gap-2 rounded-full bg-[#c4903e] px-5 py-3 text-sm font-bold text-white shadow-glow hover:bg-[#a87427]'>שלח הצבעה</button>
-            </div>
-          </div>
-          <div class='mt-6 grid gap-5 xl:grid-cols-[0.9fr_1.1fr]'>
-            <div class='space-y-4'>
-              <div class='rounded-[2rem] border border-[#e9d7b2] bg-white p-4 shadow-glow'>
-                <div class='flex items-center justify-between gap-3'>
-                  <div>
-                    <p class='text-sm uppercase tracking-[0.18em] text-[#b3740d] font-semibold'>מדריך קצר</p>
-                    <p class='mt-2 text-sm text-[#5b4f47]'>הדרגה הראשונה מקבלת 10 נקודות, הדרגה האחרונה מקבלת נקודה אחת. תמונות מחוץ לסולם תקבל 0.</p>
-                  </div>
-                  <p id='ranked-count' class='rounded-full bg-[#f8edd2] px-4 py-2 text-sm font-bold text-[#6d502e]'>0/10</p>
-                </div>
-              </div>
-              <div id='ladder-list' class='grid gap-4 md:grid-cols-2'></div>
-            </div>
-            <div class='rounded-[2rem] border border-[#e9d7b2] bg-[#fffdfa] p-5 shadow-glow'>
-              <h3 class='text-lg font-bold text-[#2e2218]'>תצוגת ניקוד</h3>
-              <div id='score-preview' class='mt-4 space-y-3 text-sm text-[#50483f]'>הנקודות יתעדכנו בזמן גרירה.</div>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-    <script type='module' src='./js/app.js'></script>
+  <body class="bg-[#f8f7f4] text-[#2c241e] font-['Heebo','Assistant','Rubik',sans-serif] antialiased min-h-screen selection:bg-[#a88247] selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
