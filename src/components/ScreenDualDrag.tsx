@@ -49,11 +49,26 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
   const [touchPos, setTouchPos] = useState<{ x: number; y: number } | null>(null);
   const [draggedPhotoTitle, setDraggedPhotoTitle] = useState<string>('');
 
-  // 2. ניהול תצוגת טאבים בנייד ('all' | 'pool' | 'ladder')
-  const [mobileTab, setMobileTab] = useState<'both' | 'pool' | 'ladder'>('both');
+  // 2. ניהול תצוגת המסך במובייל ('pool' | 'ladder')
+  const [mobileTab, setMobileTab] = useState<'pool' | 'ladder'>('pool');
 
   // 3. ניהול מודל שיבוץ מהיר למובייל (בעת לחיצה על תמונה)
   const [quickAssignPhoto, setQuickAssignPhoto] = useState<Photo | null>(null);
+
+  // ספירת תמונות שדורגו
+  const rankedCount = ladderSlots.filter((s) => s.photoId !== null).length;
+  const isLadderFull = rankedCount >= 10;
+
+  const handleAssignToLadderInternal = (photoId: string, targetRank?: number) => {
+    const wasRanked = getPhotoRank(photoId) !== null;
+    const nextRankedCount = wasRanked ? rankedCount : rankedCount + 1;
+
+    onAssignToLadder(photoId, targetRank);
+
+    if (draggedPhotoId && !wasRanked && mobileTab === 'ladder' && nextRankedCount < 10) {
+      setMobileTab('pool');
+    }
+  };
 
   /**
    * בודק באיזה מקום בסולם משובצת תמונה
@@ -70,9 +85,6 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
     if (!photoId) return undefined;
     return photos.find((p) => p.id === photoId);
   };
-
-  // ספירת תמונות שדורגו
-  const rankedCount = ladderSlots.filter((s) => s.photoId !== null).length;
 
   /**
    * טיפול בתחילת גרירה במגע (Touch Start)
@@ -91,6 +103,10 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
     if (!draggedPhotoId) return;
     const touch = e.touches[0];
     setTouchPos({ x: touch.clientX, y: touch.clientY });
+
+    if (!isLadderFull && touch.clientX < window.innerWidth * 0.25 && mobileTab !== 'ladder') {
+      setMobileTab('ladder');
+    }
   };
 
   /**
@@ -103,18 +119,16 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
       return;
     }
 
-    // מציאת האלמנט שנמצא תחת האצבע בעת השחרור
     const changedTouch = e.changedTouches[0];
     const dropTarget = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
 
     if (dropTarget) {
-      // בדיקה אם האלמנט או אחד מאבותיו הוא משבצת בסולם
       const slotElement = dropTarget.closest('[data-slot-rank]');
       if (slotElement) {
         const rankAttr = slotElement.getAttribute('data-slot-rank');
         if (rankAttr) {
           const targetRank = parseInt(rankAttr, 10);
-          onAssignToLadder(draggedPhotoId, targetRank);
+          handleAssignToLadderInternal(draggedPhotoId, targetRank);
         }
       }
     }
@@ -173,16 +187,8 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           </button>
         </div>
 
-        {/* מתג כרטיסיות מותאם למובייל בלבד (הצג מאגר / הצג סולם / תצוגה כפולה) */}
+        {/* מתג כרטיסיות מותאם למובייל בלבד (עבור בין מאגר התמונות לסולם) */}
         <div className="flex lg:hidden bg-slate-100 p-1 rounded-xl gap-1 text-xs font-semibold">
-          <button
-            onClick={() => setMobileTab('both')}
-            className={`flex-1 py-2 rounded-lg text-center transition-all ${
-              mobileTab === 'both' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            {dragPage.tabBothText}
-          </button>
           <button
             onClick={() => setMobileTab('pool')}
             className={`flex-1 py-2 rounded-lg text-center transition-all ${
@@ -201,6 +207,11 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           </button>
         </div>
       </div>
+      {draggedPhotoId && mobileTab === 'pool' && !isLadderFull && (
+        <div className="lg:hidden rounded-3xl border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm font-semibold shadow-sm">
+          גרור שמאלה כדי לפתוח את סולם הדירוג ולהמשיך לשבץ
+        </div>
+      )}
 
       {/* תצוגה מרכזית - גרירה כפולה (מאגר + סולם) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
