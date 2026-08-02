@@ -86,7 +86,7 @@ export default function App() {
    * @returns {void}
    */
   const handleAssignToLadder = (photoId: string, targetRank?: number): void => {
-    setLadderSlots((prevSlots) => {
+    setLadderSlots((prevSlots: LadderSlot[]) => {
       const newSlots = [...prevSlots];
       const existingSlotIndex = newSlots.findIndex((s) => s.photoId === photoId);
 
@@ -120,8 +120,8 @@ export default function App() {
    * @returns {void}
    */
   const handleRemoveFromLadder = (photoId: string): void => {
-    setLadderSlots((prevSlots) =>
-      prevSlots.map((slot) =>
+    setLadderSlots((prevSlots: LadderSlot[]) =>
+      prevSlots.map((slot: LadderSlot) =>
         slot.photoId === photoId ? { ...slot, photoId: null } : slot
       )
     );
@@ -138,7 +138,7 @@ export default function App() {
     const targetRank = direction === 'up' ? currentRank - 1 : currentRank + 1;
     if (targetRank < 1 || targetRank > 10) return;
 
-    setLadderSlots((prevSlots) => {
+    setLadderSlots((prevSlots: LadderSlot[]) => {
       const newSlots = [...prevSlots];
       const indexA = newSlots.findIndex((s) => s.rank === currentRank);
       const indexB = newSlots.findIndex((s) => s.rank === targetRank);
@@ -159,8 +159,8 @@ export default function App() {
    */
   const handleResetLadder = (): void => {
     if (window.confirm("האם לאפס את כל המשבצות בסולם?")) {
-      setLadderSlots((prevSlots) =>
-        prevSlots.map((slot) => ({ ...slot, photoId: null }))
+      setLadderSlots((prevSlots: LadderSlot[]) =>
+        prevSlots.map((slot: LadderSlot) => ({ ...slot, photoId: null }))
       );
     }
   };
