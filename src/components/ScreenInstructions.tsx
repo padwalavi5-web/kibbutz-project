@@ -18,32 +18,18 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
 
  return (
    <div className="mx-auto max-w-4xl animate-fadeIn space-y-6 px-3 py-6 sm:px-4 sm:py-8 lg:py-10">
-     <div className="relative overflow-hidden rounded-[32px] border border-emerald-100 bg-gradient-to-br from-[#f5fff8] via-white to-[#eefbff] p-6 shadow-[0_20px_50px_rgba(11,122,68,0.12)] sm:p-8">
-       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-r from-emerald-400/15 via-cyan-400/10 to-transparent" />
-       <div className="relative z-10 space-y-4 text-center">
-         <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700 shadow-sm">
-           <Sparkles className="h-3.5 w-3.5" />
-           <span>{instructionsPage.subtitle}</span>
-         </div>
+     <div className="relative overflow-hidden rounded-[24px] border border-emerald-50 bg-gradient-to-br from-[#f7fff9] to-[#f0fbff] p-6 shadow-[0_12px_30px_rgba(11,122,68,0.06)] sm:p-8">
+       <div className="relative z-10 text-center space-y-2">
 
-         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl lg:text-3xl">
            {eventDetails.title} <span className="font-light text-slate-500">|</span> {eventDetails.subTitle}
          </h1>
 
+         {/* keep only the instructions heading in the banner */}
          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
            {instructionsPage.title}
          </p>
 
-         <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-700">
-           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 shadow-sm">
-             <CalendarDays className="h-4 w-4 text-emerald-600" />
-             {eventDetails.dateText}
-           </span>
-           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 shadow-sm">
-             <MapPin className="h-4 w-4 text-sky-600" />
-             {eventDetails.locationText}
-           </span>
-         </div>
        </div>
      </div>
 

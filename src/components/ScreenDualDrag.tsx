@@ -119,22 +119,17 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
       <div className="overflow-hidden rounded-[28px] border border-emerald-100 bg-gradient-to-br from-white via-emerald-50/70 to-cyan-50/60 p-4 shadow-[0_20px_45px_rgba(11,122,68,0.08)] sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-700 shadow-sm">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>{dragPage.pageHeaderTitle}</span>
-            </div>
             <div>
-              <h1 className="text-xl font-semibold text-slate-900 sm:text-2xl">
-                {dragPage.pageHeaderTitle}
-              </h1>
-              <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                {dragPage.pageHeaderSubtitle}
-              </p>
-            </div>
+            <h1 className="text-xl font-semibold text-slate-900 sm:text-2xl">
+              {dragPage.pageHeaderTitle}
+            </h1>
+            <p className="mt-1 text-sm leading-relaxed text-slate-600">
+              {dragPage.pageHeaderSubtitle}
+            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-            <span className="rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-sm font-semibold text-emerald-700 shadow-sm">
+            <span className="rounded-full border border-emerald-100 bg-emerald-50/60 px-3 py-1 text-sm font-semibold text-emerald-700 shadow-sm">
               {rankedCount}/10 {dragPage.rankedStatusText}
             </span>
             <button
