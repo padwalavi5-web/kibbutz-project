@@ -12,7 +12,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--page-background, linear-gradient(180deg, #ecfff3 0%, #e7fbf9 30%, #eaf8ff 100%));
+  background: var(--page-background, linear-gradient(180deg, #e8fff7 0%, #f2f7ff 40%, #f8f0ff 100%));
   color: var(--primary-color, #0b6b3a);
   font-family: var(--font-family, 'Rubik','Assistant',sans-serif);
 }
@@ -29,8 +29,10 @@ body {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at top left, rgba(24, 192, 106, 0.08), transparent 28%),
-    radial-gradient(circle at top right, rgba(5, 183, 216, 0.07), transparent 24%),
+    radial-gradient(circle at top left, rgba(24, 192, 106, 0.14), transparent 24%),
+    radial-gradient(circle at top right, rgba(5, 183, 216, 0.12), transparent 20%),
+    radial-gradient(circle at bottom left, rgba(140, 210, 255, 0.12), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(210, 190, 255, 0.08), transparent 26%),
     linear-gradient(135deg, rgba(255,255,255,0.08), transparent 60%);
   z-index: -1;
 }

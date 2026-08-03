@@ -43,6 +43,8 @@ export const SITE_CONFIG = {
   instructionsPage: {
     title: "הוראות השתתפות בדירוג התמונות",
     subtitle: "מערכת דירוג תמונות ה-60 של עלומים",
+    heroImageUrl: "",
+    heroImageAlt: "תמונה לדף הוראות",
     steps: [
       {
         number: "1",
