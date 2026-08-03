@@ -1,111 +1,107 @@
-/**
- * =========================================================================
- * מודול חיבור ל-Firebase Firestore
- * =========================================================================
- * קובץ זה מכיל פונקציה מובנית ומודגמת לשמירת תוצאות ההצבעה של המשתמש
- * במסד הנתונים Firebase Firestore.
- * 
- * הוראות להפעלת Firebase בפרויקט:
- * 1. יש להתקין את ספריית firebase: npm install firebase
- * 2. יש לעדכן את קונפיגורציית ה-firebaseConfig להלן עם מפתחות הפרויקט שלכם.
- * =========================================================================
- */
+﻿import { VoteResult } from '../types';
 
-import { VoteResult } from '../types';
+// Optional Firebase initialization — reads config from Vite env vars (VITE_FIREBASE_*)
+let firebaseInitialized = false;
+let firebaseDb: any = null;
 
-/**
- * פונקציה לשמירת נתוני הצבעה במסד הנתונים Firebase Firestore.
- * 
- * @description פונקציה זו מחשבת את סיכום הדירוגים, מכינה את אובייקט הנתונים,
- * ומנסה לשמור אותו באוסף (Collection) בשם "photo_votes".
- * במידה ואינטגרציית Firebase אינה פעילה, הפונקציה מבצעת סימולציית שמירה מוצלחת
- * ושומרת את התוצאה ב-localStorage.
- * 
- * @param {VoteResult} voteData - אובייקט המכיל את כל הנתונים המחושבים של הדירוג
- * @returns {Promise<{ success: boolean; id: string; message: string }>} - אובייקט תוצאה הכולל סטטוס, מזהה הצבעה והודעת חיווי
- */
-export async function saveToFirebase(voteData: VoteResult): Promise<{ success: boolean; id: string; message: string }> {
-  console.log("🔥 [Firebase Integration] תהליך שמירת דירוג התחיל עבור:", voteData);
+async function tryInitFirebase() {
+  if (firebaseInitialized) return;
 
   try {
-    // בדיקה האם הגדרת Firebase קיימת בסביבה העבודה
-    // במידה ומוגדרים מפתחות אמיתיים ב-window.firebase or process.env:
-    /* 
-    const db = getFirestore(app);
-    const docRef = await addDoc(collection(db, "kibbutz_60_votes"), {
-      ...voteData,
-      submittedAt: new Date().toISOString()
-    });
-    return { success: true, id: docRef.id, message: "ההצבעה נשמרה בהצלחה ב-Firebase!" };
-    */
+    const cfg = {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string | undefined,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string | undefined,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID as string | undefined,
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET as string | undefined,
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID as string | undefined,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID as string | undefined,
+      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID as string | undefined,
+    };
 
-    // שמיכה מקומית ב-localStorage לשמירת רציפות הנתונים גם ללא אינטרנט
+    const hasCfg = cfg.apiKey && cfg.projectId && cfg.appId;
+    if (!hasCfg) return;
+
+    // dynamic imports so the code doesn't fail when firebase isn't installed/configured
+    const firebaseApp = await import('firebase/app');
+    const firestore = await import('firebase/firestore');
+
+    const { initializeApp, getApps } = firebaseApp as any;
+    const { getFirestore } = firestore as any;
+
+    if (!getApps || (getApps && getApps().length === 0)) {
+      initializeApp(cfg);
+    }
+
+    firebaseDb = getFirestore();
+    firebaseInitialized = true;
+    console.info('✅ Firebase initialized');
+  } catch (e) {
+    console.warn('⚠️ Firebase init skipped or failed:', e);
+  }
+}
+
+/**
+ * Save vote either to Firestore (if configured) or to localStorage as fallback
+ */
+export async function saveToFirebase(voteData: VoteResult): Promise<{ success: boolean; id: string; message: string }> {
+  console.log('🔥 [Firebase] saving vote', voteData);
+
+  try {
+    await tryInitFirebase();
+
+    if (firebaseInitialized && firebaseDb) {
+      try {
+        const firestore = await import('firebase/firestore');
+        const { collection, addDoc, serverTimestamp } = firestore as any;
+        const docRef = await addDoc(collection(firebaseDb, 'kibbutz_60_votes'), {
+          ...voteData,
+          submittedAt: new Date().toISOString(),
+          createdAt: serverTimestamp()
+        });
+
+        return { success: true, id: docRef.id, message: 'ההצבעה נשמרה בהצלחה ב-Firebase!' };
+      } catch (e) {
+        console.warn('Firebase write failed — falling back to localStorage', e);
+      }
+    }
+
+    // Fallback: save locally
     const existingVotesRaw = localStorage.getItem('kibbutz_60_all_votes');
     const existingVotes = existingVotesRaw ? JSON.parse(existingVotesRaw) : [];
-    
+
     const voteId = `vote_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-    const fullVoteObject = {
-      id: voteId,
-      ...voteData,
-      savedAt: new Date().toISOString()
-    };
+    const fullVoteObject = { id: voteId, ...voteData, savedAt: new Date().toISOString() };
 
     existingVotes.push(fullVoteObject);
     localStorage.setItem('kibbutz_60_all_votes', JSON.stringify(existingVotes));
     localStorage.setItem('kibbutz_60_my_last_vote', JSON.stringify(fullVoteObject));
 
-    // השהיה קצרה לסימולציית תקשורת שרת
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    await new Promise((r) => setTimeout(r, 600));
 
-    return {
-      success: true,
-      id: voteId,
-      message: "הדירוג נרשם בהצלחה במסד הנתונים! תודה על השתתפותך."
-    };
+    return { success: true, id: voteId, message: 'הדירוג נרשם בהצלחה (מקומי) — Firebase לא הוגדר.' };
   } catch (error) {
-    console.error("❌ שגיאה בשמירת הדירוג ב-Firebase:", error);
-    return {
-      success: false,
-      id: "",
-      message: "אירעה שגיאה בשמירת הנתונים. אנא נסה שנית."
-    };
+    console.error('❌ error saving vote', error);
+    return { success: false, id: '', message: 'אירעה שגיאה בשמירת הנתונים. אנא נסה שנית.' };
   }
 }
 
-/**
- * פונקציה לקבלת נתוני הצבעות קהילתיות מצטברות.
- * 
- * @description פונקציה זו מחשבת את סך הניקוד המצטבר של כל התמונות מכלל ההצבעות שנרשמו,
- * לצורך הצגת דירוג הקהילה והתמונות המובילות.
- * 
- * @param {Array<any>} photos - מערך התמונות המלא מ-content.ts
- * @returns {Record<string, { totalPoints: number; voteCount: number; averageRank: number }>} - מיפוי מזהה תמונה לסטטיסטיקה קהילתית
- */
 export function getCommunityScores(photos: Array<{ id: string; title: string }>) {
   const existingVotesRaw = localStorage.getItem('kibbutz_60_all_votes');
   const allVotes = existingVotesRaw ? JSON.parse(existingVotesRaw) : [];
 
   const stats: Record<string, { totalPoints: number; voteCount: number; rankPositions: number[] }> = {};
-
-  // איתחול סטטיסטיקה לכל תמונה
   photos.forEach((photo) => {
-    stats[photo.id] = {
-      totalPoints: 0,
-      voteCount: 0,
-      rankPositions: []
-    };
+    stats[photo.id] = { totalPoints: 0, voteCount: 0, rankPositions: [] };
   });
 
-  // צבירת נתונים מכלל הדירוגים
   allVotes.forEach((vote: VoteResult) => {
     if (vote.photoScoresMap) {
       Object.entries(vote.photoScoresMap).forEach(([photoId, pts]) => {
         if (stats[photoId]) {
-          stats[photoId].totalPoints += pts;
-          if (pts > 0) {
+          stats[photoId].totalPoints += pts as number;
+          if ((pts as number) > 0) {
             stats[photoId].voteCount += 1;
-            // מציאת הדרגה שנבחרה (10 - pts + 1)
-            const rank = 11 - pts;
+            const rank = 11 - (pts as number);
             stats[photoId].rankPositions.push(rank);
           }
         }
