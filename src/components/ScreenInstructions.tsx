@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { SITE_CONFIG } from '../content';
-import { ArrowLeft, CalendarDays, CheckCircle2, MapPin, Sparkles } from 'lucide-react';
+import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 interface ScreenInstructionsProps {
  onStartDrag: () => void;
@@ -57,15 +57,6 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
        </div>
      </div>
 
-     <div className="text-center">
-       <button
-         onClick={onStartDrag}
-         className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#0b7a44] via-[#18c06a] to-[#05b7d8] px-8 py-4 text-base font-semibold text-white shadow-[0_16px_35px_rgba(11,122,68,0.24)] transition-all duration-300 active:scale-95"
-       >
-         <span>{instructionsPage.startButtonText}</span>
-         <ArrowLeft className="h-5 w-5 text-white" />
-       </button>
-     </div>
    </div>
  );
 };

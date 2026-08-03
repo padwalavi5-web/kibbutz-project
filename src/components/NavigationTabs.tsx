@@ -46,9 +46,6 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
          >
            <MoveHorizontal className={`h-4 w-4 ${activeScreen === 'drag' ? 'text-white' : 'text-sky-600'}`} />
            <span>דירוג תמונות ה-60</span>
-           <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${activeScreen === 'drag' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'}`}>
-             {rankedCount}/10
-           </span>
          </button>
        </div>
      </div>

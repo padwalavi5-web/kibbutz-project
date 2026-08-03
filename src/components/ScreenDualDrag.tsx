@@ -11,7 +11,7 @@ import React, { useState, useEffect } from 'react';
 import { Photo, LadderSlot } from '../types';
 import { SITE_CONFIG } from '../content';
 import { ImageBox } from './ImageBox';
-import { Plus, X, RefreshCw, ArrowUp, ArrowDown, Sparkles } from 'lucide-react';
+import { Plus, X, RefreshCw, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface ScreenDualDragProps {
   /** מערך התמונות במאגר */
@@ -97,8 +97,8 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
     if (hasSubmitted || isSubmitting || rankedCount === 0) return;
     setIsSubmitting(true);
     try {
-      const maybe = onSubmitVote();
-      if (maybe && typeof (maybe as any).then === 'function') {
+      const maybe: any = (onSubmitVote as any)();
+      if (maybe && typeof maybe.then === 'function') {
         await maybe;
       }
       try {
@@ -129,22 +129,19 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-            <span className="rounded-full border border-emerald-100 bg-emerald-50/60 px-3 py-1 text-sm font-semibold text-emerald-700 shadow-sm">
-              {rankedCount}/10 {dragPage.rankedStatusText}
-            </span>
-            <button
-              onClick={onGoToInstructions}
-              className="rounded-full bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 hover:bg-slate-200"
-            >
-              {dragPage.instructionsButtonText}
-            </button>
-            <button
-              onClick={onResetLadder}
-              className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-700 transition-all duration-200 hover:bg-amber-100"
-            >
-              <RefreshCw className="h-4 w-4" />
-              <span>{dragPage.resetButtonText}</span>
-            </button>
+          <button
+            onClick={onGoToInstructions}
+            className="rounded-full bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 hover:bg-slate-200"
+          >
+            {dragPage.instructionsButtonText}
+          </button>
+          <button
+            onClick={onResetLadder}
+            className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-700 transition-all duration-200 hover:bg-amber-100"
+          >
+            <RefreshCw className="h-4 w-4" />
+            <span>{dragPage.resetButtonText}</span>
+          </button>
           </div>
         </div>
       </div>
@@ -156,17 +153,14 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           }`}
         >
           <div className="mb-4 flex items-center justify-between border-b border-emerald-100 pb-3">
-            <div>
-              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">
-                {dragPage.poolTitle} ({photos.length})
-              </h2>
-              <p className="text-xs text-slate-500 sm:text-sm">
-                לחצו על ״שבץ בסולם״ ובחרו את המיקום המועדף
-              </p>
-            </div>
-            <div className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-              {isLadderFull ? 'מלא' : 'ממתין'}
-            </div>
+          <div>
+            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">
+              {dragPage.poolTitle} ({photos.length})
+            </h2>
+            <p className="text-xs text-slate-500 sm:text-sm">
+              לחצו על ״שבץ בסולם״ ובחרו את המיקום המועדף
+            </p>
+          </div>
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
@@ -188,11 +182,6 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       className="w-full image-large overflow-hidden rounded-[18px]"
                     />
 
-                    {isRanked && (
-                      <span className="absolute right-2 top-2 rounded-full bg-[#2d241d]/90 px-2.5 py-1 text-[11px] font-semibold text-[#f7f4ef] shadow-sm">
-                        {dragPage.rankBadgePrefix}{currentRank}
-                      </span>
-                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -415,5 +404,6 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
         </div>
       )}
     </div>
+  </div>
   );
 };
