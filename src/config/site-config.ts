@@ -14,9 +14,10 @@
 export const SITE_CONFIG = {
   // --- עיצוב וצבעי האתר (אופציונלי לשינוי) ---
   theme: {
-    // עדכון לפלטת צבעים חגיגית בגווני ירוק — מתאים למראה שמח אך מקצועי
+    // עדכון לפלטת צבעים חגיגית בגווני ירוק וטורקיז — מתאים למראה שמח אך מקצועי
     primaryColor: "#0b6b3a",      // ירוק כהה לכותרות וכפתורים
     accentColor: "#10b981",       // ירוק בוהק להדגשות
+    secondaryAccent: "#06b6d4",   // טורקיז/כחול להרמוניה וחגיגיות
     buttonTextColor: "#ffffff",   // טקסט לבן על כפתורים בצבע
     pageBackground: "#f6fdf6",    // רקע בהיר עם רמז לירוק
     fontFamily: "'Rubik', 'Assistant', sans-serif"
@@ -86,7 +87,8 @@ export const SITE_CONFIG = {
     quickAssignSubtitle: "בחרו את הדרגה (מקום 1 עד מקום 10) שבה תרצו לשבץ את התמונה:",
     freeSlotText: "פנוי",
     cancelButtonText: "ביטול",
-    openLadderButtonText: "פתח את סולם הדירוג"
+    openLadderButtonText: "פתח את סולם הדירוג",
+    closeLadderButtonText: "חזור אל התמונות"
   },
 
   // --- 10 הדרגות בסולם הדירוג ---

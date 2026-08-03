@@ -24,6 +24,8 @@ function hexToRgb(hex: string) {
 }
 if (theme.accentColor) root.style.setProperty('--accent-rgb', hexToRgb(theme.accentColor));
 if (theme.primaryColor) root.style.setProperty('--primary-rgb', hexToRgb(theme.primaryColor));
+if (theme.secondaryAccent) root.style.setProperty('--secondary-color', theme.secondaryAccent);
+if (theme.secondaryAccent) root.style.setProperty('--secondary-rgb', hexToRgb(theme.secondaryAccent));
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

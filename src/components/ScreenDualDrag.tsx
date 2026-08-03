@@ -44,10 +44,8 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
 }) => {
   const { dragPage } = SITE_CONFIG;
 
-  // 1. הסרנו את אפשרות הגרירה — משתמשים בקישורי שיבוץ גדולים וברורים
-  const [mobileTab, setMobileTab] = useState<'pool' | 'ladder'>('pool');
-
-  // 2. מודל שיבוץ מהיר (כאשר לוחצים על כפתור "שבץ")
+  // 1. הסרנו את אפשרות הגרירה — משתמשים בכפתורי שיבוץ; הסולם מוסתר כבררת מחדל
+  const [showLadder, setShowLadder] = useState<boolean>(false);
   const [quickAssignPhoto, setQuickAssignPhoto] = useState<Photo | null>(null);
 
   // ספירת תמונות שדורגו
@@ -56,7 +54,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
 
   const handleAssignToLadderInternal = (photoId: string, targetRank?: number) => {
     onAssignToLadder(photoId, targetRank);
-    // אחרי שיבוץ באמצעות הכפתור נשארים במאגר — המשתמש יכול ללחוץ על "פתח סולם" למעבר
+    // נשארים בתצוגת התמונות — המשתמש צריך ללחוץ 'לסולם הדירוג' אם רוצה לראות את הסולם
   };
 
   /**
@@ -105,30 +103,30 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
       {/* מתג כרטיסיות מותאם למובייל בלבד (עבור בין מאגר התמונות לסולם) */}
       <div className="flex lg:hidden bg-slate-100 p-1 rounded-xl gap-1 text-xs font-semibold">
         <button
-          onClick={() => setMobileTab('pool')}
+          onClick={() => setShowLadder(false)}
           className={`flex-1 py-2 rounded-lg text-center transition-all ${
-            mobileTab === 'pool' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+            !showLadder ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           {dragPage.tabPoolText} ({photos.length})
         </button>
         <button
-          onClick={() => setMobileTab('ladder')}
+          onClick={() => setShowLadder(true)}
           className={`flex-1 py-2 rounded-lg text-center transition-all ${
-            mobileTab === 'ladder' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+            showLadder ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           {dragPage.tabLadderText} ({rankedCount}/10)
         </button>
       </div>
 
-      {/* תצוגה מרכזית - גרירה כפולה (מאגר + סולם) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+      {/* תצוגה מרכזית - גלריה תמונות או סולם (לפי בחירת המשתמש) */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6">
         
-        {/* עמודה 1: מאגר התמונות */}
+        {/* עמודה 1: מאגר התמונות (מלא מסך כשהסולם מוסתר) */}
         <div
-          className={`lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-4 space-y-3 sm:space-y-4 ${
-            mobileTab === 'ladder' ? 'hidden lg:block' : 'block'
+          className={`bg-white rounded-3xl p-4 space-y-3 sm:space-y-4 ${
+            showLadder ? 'hidden' : 'block'
           }`}
         >
           <div className="border-b pb-3 border-slate-100 flex items-center justify-between">
@@ -143,7 +141,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           </div>
 
           {/* רשת התמונות במאגר (גרירה מושבתת) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-h-[600px] overflow-y-auto p-0.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 overflow-y-auto p-0.5">
             {photos.map((photo) => {
               const currentRank = getPhotoRank(photo.id);
               const isRanked = currentRank !== null;
@@ -162,7 +160,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                     <ImageBox
                       src={photo.imageUrl}
                       alt={photo.title}
-                      className="w-full h-32 rounded-xl overflow-hidden"
+                      className="w-full image-large rounded-xl overflow-hidden"
                     />
 
                     <div className="absolute top-2 left-2 bg-black/60 text-white p-1 rounded-md text-[11px] sm:hidden">
@@ -226,10 +224,18 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                 {dragPage.ladderSubtitle}
               </p>
             </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowLadder(false)}
+                className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-2xl transition-all duration-200 cursor-pointer"
+              >
+                {dragPage.closeLadderButtonText}
+              </button>
+            </div>
           </div>
 
           {/* 10 המשבצות בסולם */}
-          <div className="space-y-3 max-h-[650px] overflow-y-auto p-0.5">
+          <div className={`${showLadder ? 'block' : 'hidden'} space-y-3 max-h-[650px] overflow-y-auto p-0.5`}>
             {ladderSlots.map((slot) => {
               const photo = getPhotoById(slot.photoId);
 
@@ -316,10 +322,10 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
         <div className="lg:hidden col-span-12 mt-3 px-1">
           <div className="flex flex-col gap-3">
             <button
-              onClick={() => setMobileTab('ladder')}
+              onClick={() => setShowLadder(true)}
               className="w-full py-3 theme-btn font-semibold rounded-2xl shadow-sm text-lg"
             >
-              {dragPage.tabLadderText}
+              {dragPage.openLadderButtonText}
             </button>
             <button
               onClick={onSubmitVote}
