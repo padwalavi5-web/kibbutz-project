@@ -7,7 +7,7 @@
  * תצוגה ניידת נוחה (טאבים ניידים / תצוגה כפולה למסכים רחבים), וכפתורי שיבוץ מהירים.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Photo, LadderSlot } from '../types';
 import { SITE_CONFIG } from '../content';
 import { ImageBox } from './ImageBox';
@@ -48,6 +48,19 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
   const [showLadder, setShowLadder] = useState<boolean>(false);
   const [quickAssignPhoto, setQuickAssignPhoto] = useState<Photo | null>(null);
 
+  // שמירה/מניעת שליחה כפולה
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem('kibbutz_60_has_submitted');
+      setHasSubmitted(!!v);
+    } catch (e) {
+      setHasSubmitted(false);
+    }
+  }, []);
+
   // ספירת תמונות שדורגו
   const rankedCount = ladderSlots.filter((s) => s.photoId !== null).length;
   const isLadderFull = rankedCount >= 10;
@@ -73,10 +86,34 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
     return photos.find((p) => p.id === photoId);
   };
 
+  /**
+   * טיפול בשליחת הדירוג — מונע שליחה כפולה ומייצר דגל מקומי
+   */
+  const handleSubmit = async () => {
+    if (hasSubmitted || isSubmitting || rankedCount === 0) return;
+    setIsSubmitting(true);
+    try {
+      const maybe = onSubmitVote();
+      if (maybe && typeof (maybe as any).then === 'function') {
+        await maybe;
+      }
+      try {
+        localStorage.setItem('kibbutz_60_has_submitted', '1');
+      } catch (e) {
+        // ignore storage errors
+      }
+      setHasSubmitted(true);
+    } catch (e) {
+      console.error('submit failed', e);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 animate-fadeIn pb-24">
       
-      {/* כותרת עליונה פשוטה (הסרנו את התיבה הגדולה)` */}
+      {/* כותרת עליונה פשוטה (הסרנו את התיבה הגדולה) */}
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-semibold text-slate-900">
@@ -208,118 +245,120 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
             })}
           </div>
         </div>
-
-        {/* עמודה 2: סולם הדירוג - 10 מקומות */}
-        <div
-          className={`lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 space-y-4 shadow-sm ${
-            !showLadder ? 'hidden lg:block' : 'block'
-          }`}
-        >
-          <div className="border-b pb-3 border-slate-100 flex items-center justify-between">
-            <div>
-              <h2 className="font-semibold text-base sm:text-lg text-slate-900">
-                {dragPage.ladderTitle}
-              </h2>
-              <p className="text-[11px] sm:text-xs text-slate-500">
-                {dragPage.ladderSubtitle}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowLadder(false)}
-                className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-2xl transition-all duration-200 cursor-pointer"
-              >
-                {dragPage.closeLadderButtonText}
-              </button>
-            </div>
-          </div>
-
-          {/* 10 המשבצות בסולם */}
-          <div className={`${showLadder ? 'block' : 'hidden'} space-y-3 max-h-[650px] overflow-y-auto p-0.5`}>
-            {ladderSlots.map((slot) => {
-              const photo = getPhotoById(slot.photoId);
-
-              return (
-                <div
-                  key={slot.rank}
-                  data-slot-rank={slot.rank}
-                  className={`p-3 rounded-3xl border transition-all duration-200 flex items-center gap-3 ${
-                    photo
-                      ? 'bg-slate-50 border-slate-200 shadow-sm'
-                      : 'bg-slate-50 border-dashed border-slate-200'
-                  }`}
-                >
-                  {/* מספר הדרגה בסולם */}
-                  <div className="flex flex-col items-center justify-center w-9 sm:w-10 shrink-0">
-                    <span className="text-sm sm:text-base font-semibold text-slate-900">
-                      #{slot.rank}
-                    </span>
-                  </div>
-
-                  {/* תוכן המשבצת בסולם */}
-                  <div className="flex-1 min-w-0">
-                    {photo ? (
-                      <div className="flex items-center gap-3">
-                        <ImageBox
-                          src={photo.imageUrl}
-                          alt={photo.title}
-                          className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl shrink-0 overflow-hidden"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <h4 className="font-bold text-xs sm:text-sm text-[#2d241d] font-['Heebo'] truncate">
-                            {photo.title}
-                          </h4>
-                          <p className="text-[11px] text-[#635548] truncate hidden sm:block">
-                            {photo.description}
-                          </p>
-                          <span className="text-[10px] font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md mt-1 inline-block border border-slate-200">
-                            {slot.points} {dragPage.pointsText}
-                          </span>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="py-3 text-center text-xs text-slate-500 font-medium">
-                        {dragPage.emptySlotText}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* כפתורי הזזה / הסרה מהסולם */}
-                  {photo && (
-                    <div className="flex flex-col items-center gap-1 shrink-0">
-                      <button
-                        onClick={() => onMoveSlot(slot.rank, 'up')}
-                        disabled={slot.rank === 1}
-                        className="p-1 hover:bg-[#eae4d8] text-[#5e4b3c] rounded-lg disabled:opacity-30 cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
-                        title="הזז למעלה"
-                      >
-                        <ArrowUp className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => onRemoveFromLadder(photo.id)}
-                        className="p-1 hover:bg-slate-100 text-slate-600 rounded-lg cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
-                        title="הסר ממיקום זה"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => onMoveSlot(slot.rank, 'down')}
-                        disabled={slot.rank === 10}
-                        className="p-1 hover:bg-[#eae4d8] text-[#5e4b3c] rounded-lg disabled:opacity-30 cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
-                        title="הזז למטה"
-                      >
-                        <ArrowDown className="w-4 h-4" />
-                      </button>
-                    </div>
-                  )}
+        {/* Ladder view: render full-screen only when requested */}        {showLadder && (
+          <div className="fixed inset-0 z-50 bg-white p-4 overflow-auto">
+            <div className="max-w-3xl mx-auto">
+              <div className="border-b pb-3 border-slate-100 flex items-center justify-between mb-3">
+                <div>
+                  <h2 className="font-semibold text-base sm:text-lg text-slate-900">
+                    {dragPage.ladderTitle}
+                  </h2>
+                  <p className="text-[11px] sm:text-xs text-slate-500">
+                    {dragPage.ladderSubtitle}
+                  </p>
                 </div>
-              );
-            })}
-          </div>
-        </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowLadder(false)}
+                    className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-2xl transition-all duration-200 cursor-pointer"
+                  >
+                    {dragPage.closeLadderButtonText}
+                  </button>
+                </div>
+              </div>
 
-        {/* כפתורי פעולה בתחתית המסך (מובייל בלבד) */}
-        <div className="lg:hidden col-span-12 mt-3 px-1">
+              <div className="space-y-3 max-h-[70vh] overflow-y-auto p-0.5">
+                {ladderSlots.map((slot) => {
+                  const photo = getPhotoById(slot.photoId);
+
+                  return (
+                    <div
+                      key={slot.rank}
+                      data-slot-rank={slot.rank}
+                      className={`p-3 rounded-3xl border transition-all duration-200 flex items-center gap-3 ${
+                        photo
+                          ? 'bg-slate-50 border-slate-200 shadow-sm'
+                          : 'bg-slate-50 border-dashed border-slate-200'
+                      }`}
+                    >
+                      <div className="flex flex-col items-center justify-center w-9 sm:w-10 shrink-0">
+                        <span className="text-sm sm:text-base font-semibold text-slate-900">
+                          #{slot.rank}
+                        </span>
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        {photo ? (
+                          <div className="flex items-center gap-3">
+                            <ImageBox
+                              src={photo.imageUrl}
+                              alt={photo.title}
+                              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl shrink-0 overflow-hidden"
+                            />
+                            <div className="min-w-0 flex-1">
+                              <h4 className="font-bold text-xs sm:text-sm text-[#2d241d] font-['Heebo'] truncate">
+                                {photo.title}
+                              </h4>
+                              <p className="text-[11px] text-[#635548] truncate hidden sm:block">
+                                {photo.description}
+                              </p>
+                              <span className="text-[10px] font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md mt-1 inline-block border border-slate-200">
+                                {slot.points} {dragPage.pointsText}
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="py-3 text-center text-xs text-slate-500 font-medium">
+                            {dragPage.emptySlotText}
+                          </div>
+                        )}
+                      </div>
+
+                      {photo && (
+                        <div className="flex flex-col items-center gap-1 shrink-0">
+                          <button
+                            onClick={() => onMoveSlot(slot.rank, 'up')}
+                            disabled={slot.rank === 1}
+                            className="p-1 hover:bg-[#eae4d8] text-[#5e4b3c] rounded-lg disabled:opacity-30 cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
+                            title="הזז למעלה"
+                          >
+                            <ArrowUp className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => onRemoveFromLadder(photo.id)}
+                            className="p-1 hover:bg-slate-100 text-slate-600 rounded-lg cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
+                            title="הסר ממיקום זה"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => onMoveSlot(slot.rank, 'down')}
+                            disabled={slot.rank === 10}
+                            className="p-1 hover:bg-[#eae4d8] text-[#5e4b3c] rounded-lg disabled:opacity-30 cursor-pointer min-h-[32px] min-w-[32px] flex items-center justify-center"
+                            title="הזז למטה"
+                          >
+                            <ArrowDown className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-4">
+                <button
+                  onClick={() => setShowLadder(false)}
+                  className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-3xl transition-colors cursor-pointer"
+                >
+                  {dragPage.closeLadderButtonText}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* כפתורי פעולה בתחתית המסך (מובייל בלבד) */}        <div className="lg:hidden col-span-12 mt-3 px-1">
           <div className="flex flex-col gap-3">
             <button
               onClick={() => setShowLadder(true)}
@@ -328,11 +367,13 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
               {dragPage.openLadderButtonText}
             </button>
             <button
-              onClick={onSubmitVote}
-              disabled={rankedCount === 0}
-              className={`w-full py-3 rounded-2xl text-lg font-semibold transition-colors ${rankedCount>0? 'theme-submit':'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
+              onClick={handleSubmit}
+              disabled={rankedCount === 0 || isSubmitting || hasSubmitted}
+              className={`w-full py-3 rounded-2xl text-lg font-semibold transition-colors ${
+                hasSubmitted ? 'bg-emerald-100 text-emerald-800 cursor-not-allowed' : rankedCount>0 ? 'theme-submit' : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              }`}
             >
-              {dragPage.submitButtonText} {rankedCount>0? `(${rankedCount})` : ''}
+              {hasSubmitted ? 'הדירוג נשלח' : isSubmitting ? 'שולח...' : (dragPage.submitButtonText + (rankedCount>0 ? ' (' + rankedCount + ')' : ''))}
             </button>
           </div>
         </div>
