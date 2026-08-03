@@ -2,78 +2,84 @@
  * =========================================================================
  * דף 1: דף הוראות (ScreenInstructions.tsx)
  * =========================================================================
- * מציג דף הוראות פשוט וברור להשתתפות בדירוג התמונות.
+* מציג דף הוראות צבעוני, ברור וידידותי למובייל.
  */
 
 import React from 'react';
 import { SITE_CONFIG } from '../content';
-import { FileText, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CalendarDays, CheckCircle2, MapPin, Sparkles } from 'lucide-react';
 
 interface ScreenInstructionsProps {
-  /** פונקציה למעבר לדף גרירת התמונות (דף 2) */
-  onStartDrag: () => void;
+ onStartDrag: () => void;
 }
 
-/**
- * רכיב דף 1 - הוראות שימוש.
- * 
- * @param {ScreenInstructionsProps} props - מאפייני הרכיב
- * @returns {JSX.Element} - אלמנט דף ההוראות
- */
 export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartDrag }) => {
-  const { instructionsPage, eventDetails } = SITE_CONFIG;
+ const { instructionsPage, eventDetails } = SITE_CONFIG;
 
-  return (
-    <div className="max-w-4xl mx-auto px-4 py-10 space-y-8 animate-fadeIn">
-      {/* כותרת הדף */}
-      <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm text-center space-y-4">
-        <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">
-          {eventDetails.title} <span className="font-light text-slate-500">|</span> {eventDetails.subTitle}
-        </h1>
+ return (
+   <div className="mx-auto max-w-4xl animate-fadeIn space-y-6 px-3 py-6 sm:px-4 sm:py-8 lg:py-10">
+     <div className="relative overflow-hidden rounded-[32px] border border-emerald-100 bg-gradient-to-br from-[#f5fff8] via-white to-[#eefbff] p-6 shadow-[0_20px_50px_rgba(11,122,68,0.12)] sm:p-8">
+       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-r from-emerald-400/15 via-cyan-400/10 to-transparent" />
+       <div className="relative z-10 space-y-4 text-center">
+         <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700 shadow-sm">
+           <Sparkles className="h-3.5 w-3.5" />
+           <span>{instructionsPage.subtitle}</span>
+         </div>
 
-        <p className="text-slate-600 text-base max-w-xl mx-auto leading-relaxed">
-          {instructionsPage.title}
-        </p>
-      </div>
+         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+           {eventDetails.title} <span className="font-light text-slate-500">|</span> {eventDetails.subTitle}
+         </h1>
 
-      {/* שלבי ההוראות */}
-      <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
-        <h2 className="text-xl font-semibold text-slate-900 border-b pb-4 border-slate-100 flex items-center gap-2">
-          <span>{instructionsPage.subtitle}</span>
-        </h2>
+         <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
+           {instructionsPage.title}
+         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {instructionsPage.steps.map((step) => (
-            <div
-              key={step.number}
-              className="bg-slate-50 rounded-3xl p-6 border border-slate-100 flex flex-col justify-between space-y-4 hover:border-slate-200 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-slate-900 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
-                  {step.number}
-                </span>
-                <h3 className="font-semibold text-slate-900 text-base">
-                  {step.title}
-                </h3>
-              </div>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+         <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-700">
+           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 shadow-sm">
+             <CalendarDays className="h-4 w-4 text-emerald-600" />
+             {eventDetails.dateText}
+           </span>
+           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 shadow-sm">
+             <MapPin className="h-4 w-4 text-sky-600" />
+             {eventDetails.locationText}
+           </span>
+         </div>
+       </div>
+     </div>
 
-      {/* כפתור מעבר לדף גרירת התמונות */}
-      <div className="text-center pt-4">
-        <button
-          onClick={onStartDrag}
-          className="px-8 py-4 bg-slate-900 hover:bg-slate-700 text-white font-semibold text-base rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 transform active:scale-95 cursor-pointer inline-flex items-center gap-2"
-        >
-          <span>{instructionsPage.startButtonText}</span>
-          <ArrowLeft className="w-5 h-5 text-white" />
-        </button>
-      </div>
-    </div>
-  );
+     <div className="rounded-[30px] border border-emerald-100 bg-white/85 p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-7">
+       <h2 className="flex items-center gap-2 border-b border-emerald-100 pb-4 text-lg font-semibold text-slate-900 sm:text-xl">
+         <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+         <span>{instructionsPage.subtitle}</span>
+       </h2>
+
+       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+         {instructionsPage.steps.map((step) => (
+           <div
+             key={step.number}
+             className="flex flex-col justify-between space-y-4 rounded-[24px] border border-emerald-50 bg-gradient-to-br from-white via-emerald-50/70 to-cyan-50/60 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+           >
+             <div className="flex items-center gap-3">
+               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#0b7a44] to-[#05b7d8] text-sm font-bold text-white shadow-sm">
+                 {step.number}
+               </span>
+               <h3 className="text-base font-semibold text-slate-900">{step.title}</h3>
+             </div>
+             <p className="text-sm leading-relaxed text-slate-600">{step.description}</p>
+           </div>
+         ))}
+       </div>
+     </div>
+
+     <div className="text-center">
+       <button
+         onClick={onStartDrag}
+         className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#0b7a44] via-[#18c06a] to-[#05b7d8] px-8 py-4 text-base font-semibold text-white shadow-[0_16px_35px_rgba(11,122,68,0.24)] transition-all duration-300 active:scale-95"
+       >
+         <span>{instructionsPage.startButtonText}</span>
+         <ArrowLeft className="h-5 w-5 text-white" />
+       </button>
+     </div>
+   </div>
+ );
 };

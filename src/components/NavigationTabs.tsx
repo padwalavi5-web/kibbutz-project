@@ -1,70 +1,57 @@
 /**
- * =========================================================================
- * רכיב סרגל כרטיסיות הניווט (NavigationTabs.tsx)
- * =========================================================================
- * מציג 2 כרטיסיות פשוטות למעבר בין דף 1 (הוראות) לבין דף 2 (דף גרירה כפול).
- */
+* =========================================================================
+* רכיב סרגל כרטיסיות הניווט (NavigationTabs.tsx)
+* =========================================================================
+* מציג 2 כרטיסיות צבעוניות למעבר בין דף ההוראות לבין דף הדירוג.
+*/
 
 import React from 'react';
 import { ScreenId } from '../types';
 import { FileText, MoveHorizontal } from 'lucide-react';
 
 interface NavigationTabsProps {
-  /** המסך האקטיבי כעת */
-  activeScreen: ScreenId;
-  /** פונקציית מעבר מסך */
-  onSelectScreen: (screen: ScreenId) => void;
-  /** מספר התמונות שדורגו בסולם */
-  rankedCount: number;
+ activeScreen: ScreenId;
+ onSelectScreen: (screen: ScreenId) => void;
+ rankedCount: number;
 }
 
-/**
- * רכיב כרטיסיות הניווט.
- * 
- * @param {NavigationTabsProps} props - מאפייני הרכיב
- * @returns {JSX.Element} - אלמנט סרגל הניווט
- */
 export const NavigationTabs: React.FC<NavigationTabsProps> = ({
-  activeScreen,
-  onSelectScreen,
-  rankedCount
+ activeScreen,
+ onSelectScreen,
+ rankedCount
 }) => {
-  return (
-    <nav className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="flex items-center justify-center gap-3 py-3">
-          
-          {/* הוראות */}
-          <button
-            onClick={() => onSelectScreen('instructions')}
-            className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
-              activeScreen === 'instructions'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            <FileText className="w-4 h-4 text-slate-400" />
-            <span>הוראות</span>
-          </button>
+ return (
+   <nav className="sticky top-0 z-30 border-b border-emerald-100/80 bg-white/80 backdrop-blur-xl">
+     <div className="mx-auto max-w-4xl px-3 py-3 sm:px-4">
+       <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+         <button
+           onClick={() => onSelectScreen('instructions')}
+           className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-xs font-semibold transition-all duration-200 sm:px-5 sm:py-3 sm:text-sm ${
+             activeScreen === 'instructions'
+               ? 'bg-gradient-to-r from-[#0b7a44] to-[#18c06a] text-white shadow-[0_10px_25px_rgba(11,122,68,0.2)]'
+               : 'bg-white/80 text-slate-700 hover:bg-emerald-50'
+           }`}
+         >
+           <FileText className={`h-4 w-4 ${activeScreen === 'instructions' ? 'text-white' : 'text-emerald-600'}`} />
+           <span>הוראות</span>
+         </button>
 
-          {/* דירוג תמונות */}
-          <button
-            onClick={() => onSelectScreen('drag')}
-            className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
-              activeScreen === 'drag'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            <MoveHorizontal className="w-4 h-4 text-slate-400" />
-            <span>דירוג תמונות ה-60</span>
-            <span className="bg-slate-100 text-slate-600 text-[11px] px-2.5 py-0.5 rounded-full font-bold">
-              {rankedCount}/10
-            </span>
-          </button>
-
-        </div>
-      </div>
-    </nav>
-  );
+         <button
+           onClick={() => onSelectScreen('drag')}
+           className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-xs font-semibold transition-all duration-200 sm:px-5 sm:py-3 sm:text-sm ${
+             activeScreen === 'drag'
+               ? 'bg-gradient-to-r from-[#0b7a44] to-[#05b7d8] text-white shadow-[0_10px_25px_rgba(5,183,216,0.2)]'
+               : 'bg-white/80 text-slate-700 hover:bg-sky-50'
+           }`}
+         >
+           <MoveHorizontal className={`h-4 w-4 ${activeScreen === 'drag' ? 'text-white' : 'text-sky-600'}`} />
+           <span>דירוג תמונות ה-60</span>
+           <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${activeScreen === 'drag' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'}`}>
+             {rankedCount}/10
+           </span>
+         </button>
+       </div>
+     </div>
+   </nav>
+ );
 };

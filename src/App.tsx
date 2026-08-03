@@ -185,7 +185,7 @@ export default function App() {
   const rankedCount = ladderSlots.filter((s) => s.photoId !== null).length;
 
   return (
-    <div className="min-h-screen bg-slate-100 text-[#2c2017] flex flex-col font-['Rubik','Assistant',sans-serif]">
+    <div className="page-shell flex min-h-screen flex-col font-['Rubik','Assistant',sans-serif] text-[#2c2017]">
       
       {/* 1. כותרת עליונה */}
       <Header
@@ -271,12 +271,12 @@ export default function App() {
       )}
 
       {/* פוטר תחתון נקי */}
-      <footer className="bg-[#2d241d] text-[#e8d7bb] py-4 px-4 text-xs border-t border-[#3d332a] mt-auto">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-right">
+      <footer className="mt-auto border-t border-white/20 bg-gradient-to-r from-[#2d241d] to-[#3f3226] px-4 py-4 text-xs text-[#f6ebd8] shadow-[0_-8px_24px_rgba(45,36,29,0.12)]">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 text-center sm:flex-row sm:text-right">
           <p>מערכת דירוג תמונות ה-60 | קיבוץ עלומים</p>
           <button
             onClick={() => setShowAdminLogin(true)}
-            className="text-[#c79d5f] hover:text-[#e4cfab] font-semibold transition-colors cursor-pointer"
+            className="font-semibold text-[#f1c97a] transition-colors hover:text-[#f9e0aa]"
           >
             {SITE_CONFIG.admin.footerLinkText}
           </button>
