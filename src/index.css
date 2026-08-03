@@ -67,13 +67,42 @@ body {
   background-color: rgba(var(--secondary-rgb,5,183,216), 0.06);
 }
 
-/* קצת יותר גדול ברירת מחדל לטלפונים: תמונה תתפוס מרחב גדול (כמעט גובה המסך) */
+/* Visual: allow page gradient to show through by making major white surfaces slightly translucent */
+.max-w-7xl .bg-white {
+  background: rgba(255,255,255,0.88) !important;
+}
+
+/* יותר דרמטי: reduce pure-white cards inside main container */
+.bg-white.rounded-3xl {
+  background: rgba(255,255,255,0.9) !important;
+}
+
+/* קצת יותר גדול ברירת מחדל לטלפונים: תמונה תתפוס שטח רחב במקום להיות צר וארוך */
 @media (max-width: 640px) {
   html { font-size: 16px; }
   .line-clamp-2 { line-height: 1.25rem; }
-  .image-large { height: calc(100vh - 220px); border-radius: 0.75rem; }
-  /* כרטיסי תמונה צריכים להיות רוחב מלא וללא מרווחים שמבוזבזים */
-  .festive-card { padding: 0.5rem; border-radius: 1rem; }
+
+  /* make the card full-bleed so image can span most of viewport width */
+  .festive-card {
+    width: 100vw;
+    margin-left: calc(-1 * ((100vw - 100%) / 2));
+    margin-right: calc(-1 * ((100vw - 100%) / 2));
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    box-shadow: none;
+  }
+
+  /* image becomes wider and less tall (better proportions) */
+  .image-large {
+    width: 100vw;
+    height: 56vh; /* less tall so image is not skinny */
+    object-fit: cover;
+    border-radius: 0.75rem;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* reduce inner spacing so image is visually dominant */
   .festive-card .relative { margin: 0; }
 }
 
