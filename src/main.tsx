@@ -31,6 +31,25 @@ try {
   if (typeof theme.primaryColor === 'string') root.style.setProperty('--primary-rgb', hexToRgb(theme.primaryColor));
   if (typeof theme.secondaryAccent === 'string') root.style.setProperty('--secondary-color', theme.secondaryAccent);
   if (typeof theme.secondaryAccent === 'string') root.style.setProperty('--secondary-rgb', hexToRgb(theme.secondaryAccent));
+
+  // Fallback: set body background directly in case CSS var usage is ignored by the environment or cached CSS
+  try {
+    if (typeof theme.pageBackground === 'string' && theme.pageBackground.trim().length > 0) {
+      document.body.style.background = theme.pageBackground;
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  // Debug info for easier verification in browser console
+  try {
+    console.info('Applied SITE_CONFIG.theme:', {
+      primary: theme.primaryColor,
+      accent: theme.accentColor,
+      secondary: theme.secondaryAccent,
+      pageBackground: theme.pageBackground
+    });
+  } catch (e) {}
 } catch (e) {
   // אם משהו נכשל בהגדרת התמה — אל תעצור את ההרצה של האפליקציה
   console.warn('נכשל ההגדרת תמה אוטומטית:', e);
