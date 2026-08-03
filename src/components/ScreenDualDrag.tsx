@@ -59,6 +59,15 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
     } catch (e) {
       setHasSubmitted(false);
     }
+
+    // Ensure on small screens the ladder is hidden by default (guard against stale state or older builds)
+    try {
+      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        setShowLadder(false);
+      }
+    } catch (e) {
+      // ignore
+    }
   }, []);
 
   // ספירת תמונות שדורגו
