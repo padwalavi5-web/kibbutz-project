@@ -15,11 +15,12 @@ export const SITE_CONFIG = {
   // --- עיצוב וצבעי האתר (אופציונלי לשינוי) ---
   theme: {
     // עדכון לפלטת צבעים חגיגית בגווני ירוק וטורקיז — מתאים למראה שמח אך מקצועי
-    primaryColor: "#0b6b3a",      // ירוק כהה לכותרות וכפתורים
-    accentColor: "#10b981",       // ירוק בוהק להדגשות
-    secondaryAccent: "#06b6d4",   // טורקיז/כחול להרמוניה וחגיגיות
+    primaryColor: "#0b7a44",      // ירוק כהה לכותרות וכפתורים (הוחזק קלות יותר)
+    accentColor: "#18c06a",       // ירוק בוהק להדגשות
+    secondaryAccent: "#05b7d8",   // טורקיז/כחול להרמוניה וחגיגיות
     buttonTextColor: "#ffffff",   // טקסט לבן על כפתורים בצבע
-    pageBackground: "#f6fdf6",    // רקע בהיר עם רמז לירוק
+    // השתמש ב-gradient חוגג כרקע דף כך שהרקע לא יהיה לבן אלא ירוק/טורקיז עדין
+    pageBackground: "linear-gradient(180deg, #ecfff3 0%, #e7fbf9 30%, #eaf8ff 100%)",
     fontFamily: "'Rubik', 'Assistant', sans-serif"
   },
 

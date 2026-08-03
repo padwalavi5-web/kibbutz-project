@@ -15,28 +15,31 @@ body {
   font-family: var(--font-family, 'Rubik','Assistant',sans-serif);
 }
 
-/* כרטיסים חגיגיים - משתמשים במשתני צבע מה-theme */
+/* כרטיסים חגיגיים - צבעים חזקים יותר וחגיגיים */
 .festive-card {
-  background: linear-gradient(135deg, rgba(var(--accent-rgb, 16,185,129), 0.12), rgba(var(--secondary-rgb,6,182,212),0.03));
-  border: 1px solid rgba(var(--accent-rgb, 16,185,129), 0.16);
+  background: linear-gradient(135deg, rgba(var(--accent-rgb, 24,192,106), 0.18), rgba(var(--secondary-rgb,5,183,216),0.08));
+  border: 1px solid rgba(var(--accent-rgb, 24,192,106), 0.18);
+  box-shadow: 0 8px 30px rgba(var(--primary-rgb,11,107,58), 0.04);
 }
 .festive-card-empty {
-  background: linear-gradient(180deg, rgba(255,255,255,1), rgba(var(--secondary-rgb,6,182,212),0.02));
-  border: 1px solid rgba(var(--primary-rgb, 11,107,58), 0.06);
+  background: linear-gradient(180deg, rgba(245,252,250,1), rgba(var(--secondary-rgb,5,183,216),0.04));
+  border: 1px solid rgba(var(--primary-rgb, 11,107,58), 0.08);
 }
-.festive-sep { border-color: rgba(var(--accent-rgb,16,185,129),0.06); }
+.festive-sep { border-color: rgba(var(--accent-rgb,24,192,106),0.08); }
 
 /* כפתורים נושאיים לפי theme */
 .theme-btn {
-  background: var(--primary-color, #0b6b3a);
+  background: var(--primary-color, #0b7a44);
   color: var(--button-text-color, #fff);
-  border: 1px solid rgba(var(--primary-rgb,11,107,58),0.12);
+  border: 1px solid rgba(var(--primary-rgb,11,107,58),0.14);
+  box-shadow: 0 8px 24px rgba(var(--primary-rgb,11,107,58), 0.08);
 }
-.theme-btn:hover { background: var(--secondary-color, #06b6d4); }
+.theme-btn:hover { background: var(--secondary-color, #05b7d8); }
 
 .theme-submit {
-  background: linear-gradient(90deg, var(--accent-color, #10b981), var(--secondary-color, #06b6d4));
+  background: linear-gradient(90deg, var(--accent-color, #18c06a), var(--secondary-color, #05b7d8));
   color: var(--button-text-color, #fff);
+  box-shadow: 0 10px 34px rgba(var(--accent-rgb,24,192,106),0.12);
 }
 
 .theme-badge {
@@ -55,19 +58,28 @@ body {
   font-weight: 700;
 }
 
-/* התאמת גלריה למובייל - תיבת תמונה גדולה יותר */
+/* התאמת גלריה למובייל - תיבת תמונה גדולה יותר ומשמעותית */
 .image-large {
   width: 100%;
-  height: 20rem; /* 320px */
+  height: 20rem; /* desktop baseline */
   object-fit: cover;
   border-radius: 12px;
+  background-color: rgba(var(--secondary-rgb,5,183,216), 0.06);
 }
 
-/* קצת יותר גדול ברירת מחדל לטלפונים */
+/* קצת יותר גדול ברירת מחדל לטלפונים: תמונה תתפוס מרחב גדול (כמעט גובה המסך) */
 @media (max-width: 640px) {
   html { font-size: 16px; }
   .line-clamp-2 { line-height: 1.25rem; }
-  .image-large { height: 24rem; }
+  .image-large { height: calc(100vh - 220px); border-radius: 0.75rem; }
+  /* כרטיסי תמונה צריכים להיות רוחב מלא וללא מרווחים שמבוזבזים */
+  .festive-card { padding: 0.5rem; border-radius: 1rem; }
+  .festive-card .relative { margin: 0; }
+}
+
+/* גם על מסכי טאבלט - יותר בולט */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .image-large { height: 42vh; }
 }
 
 button,
