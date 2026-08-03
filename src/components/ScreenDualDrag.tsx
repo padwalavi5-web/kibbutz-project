@@ -212,7 +212,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
         {/* עמודה 2: סולם הדירוג - 10 מקומות */}
         <div
           className={`lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 space-y-4 shadow-sm ${
-            mobileTab === 'pool' ? 'hidden lg:block' : 'block'
+            !showLadder ? 'hidden lg:block' : 'block'
           }`}
         >
           <div className="border-b pb-3 border-slate-100 flex items-center justify-between">
