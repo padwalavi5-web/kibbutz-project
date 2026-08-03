@@ -55,6 +55,34 @@ try {
   console.warn('נכשל ההגדרת תמה אוטומטית:', e);
 }
 
+// Add a small debug banner to make current build/version visible on the page (temporary)
+(function addDebugBanner(){
+  try {
+    const buildTag = 'commit: c4261ac';
+    const banner = document.createElement('div');
+    banner.id = 'debug-build-banner';
+    banner.style.position = 'fixed';
+    banner.style.zIndex = '9999';
+    banner.style.right = '12px';
+    banner.style.top = '12px';
+    banner.style.background = 'linear-gradient(90deg, rgba(11,122,68,0.95), rgba(5,183,216,0.95))';
+    banner.style.color = '#fff';
+    banner.style.padding = '6px 10px';
+    banner.style.borderRadius = '999px';
+    banner.style.boxShadow = '0 6px 18px rgba(0,0,0,0.18)';
+    banner.style.fontSize = '12px';
+    banner.style.fontWeight = '700';
+    banner.style.fontFamily = 'inherit';
+    banner.style.pointerEvents = 'none';
+    banner.textContent = buildTag + ' — theme:' + (window.getComputedStyle(document.documentElement).getPropertyValue('--page-background') || SITE_CONFIG.theme.pageBackground ? 'applied' : 'missing');
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.appendChild(banner);
+    });
+  } catch (e) {
+    // ignore
+  }
+})();
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
