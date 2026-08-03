@@ -74,8 +74,16 @@ body {
 
 /* יותר דרמטי: reduce pure-white cards inside main container */
 .bg-white.rounded-3xl {
-  background: rgba(255,255,255,0.9) !important;
+  background: rgba(255,255,255,0.86) !important;
 }
+
+/* ensure the content container itself doesn't block the gradient on mobile */
+.max-w-7xl {
+  background: transparent !important;
+}
+
+/* prevent horizontal scroll from full-bleed cards */
+html, body { overflow-x: hidden; }
 
 /* קצת יותר גדול ברירת מחדל לטלפונים: תמונה תתפוס שטח רחב במקום להיות צר וארוך */
 @media (max-width: 640px) {
@@ -84,17 +92,18 @@ body {
 
   /* make the card full-bleed so image can span most of viewport width */
   .festive-card {
+    position: relative;
+    left: calc(50% - 50vw);
     width: 100vw;
-    margin-left: calc(-1 * ((100vw - 100%) / 2));
-    margin-right: calc(-1 * ((100vw - 100%) / 2));
-    padding: 0.75rem;
+    box-sizing: border-box;
+    padding: 0.75rem 1rem;
     border-radius: 0.75rem;
     box-shadow: none;
   }
 
   /* image becomes wider and less tall (better proportions) */
   .image-large {
-    width: 100vw;
+    width: calc(100vw - 2rem);
     height: 56vh; /* less tall so image is not skinny */
     object-fit: cover;
     border-radius: 0.75rem;
@@ -109,6 +118,35 @@ body {
 /* גם על מסכי טאבלט - יותר בולט */
 @media (min-width: 641px) and (max-width: 1024px) {
   .image-large { height: 42vh; }
+}
+
+/* Mobile overrides: make the page container full width and images fill the viewport width */
+@media (max-width: 640px) {
+  .max-w-7xl {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .festive-card {
+    left: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0.6rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .image-large {
+    width: 100% !important;
+    height: 52vh !important;
+    border-radius: 0.5rem !important;
+  }
+
+  .bg-white.rounded-3xl {
+    background: rgba(245,255,250,0.7) !important;
+  }
 }
 
 button,
