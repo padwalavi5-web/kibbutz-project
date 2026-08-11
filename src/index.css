@@ -2,7 +2,7 @@
 
 :root {
   color-scheme: light;
-  font-family: 'Inter', 'Heebo', sans-serif;
+  font-family: 'Noto Sans Hebrew', 'Inter', sans-serif;
 }
 
 html {
@@ -12,9 +12,9 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--page-background, linear-gradient(180deg, #e8fff7 0%, #f2f7ff 40%, #f8f0ff 100%));
-  color: var(--primary-color, #0b6b3a);
-  font-family: var(--font-family, 'Rubik','Assistant',sans-serif);
+  background: linear-gradient(180deg, #eaf8ff 0%, #e4f4ff 34%, #eefaf4 70%, #f8fcff 100%);
+  color: #214b55;
+  font-family: var(--font-family, 'Noto Sans Hebrew', 'Inter', sans-serif);
 }
 
 .page-shell {
@@ -29,50 +29,50 @@ body {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at top left, rgba(24, 192, 106, 0.14), transparent 24%),
-    radial-gradient(circle at top right, rgba(5, 183, 216, 0.12), transparent 20%),
-    radial-gradient(circle at bottom left, rgba(140, 210, 255, 0.12), transparent 22%),
-    radial-gradient(circle at bottom right, rgba(210, 190, 255, 0.08), transparent 26%),
+    radial-gradient(circle at top left, rgba(95, 183, 232, 0.18), transparent 24%),
+    radial-gradient(circle at top right, rgba(99, 199, 169, 0.16), transparent 20%),
+    radial-gradient(circle at bottom left, rgba(167, 221, 255, 0.14), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(170, 231, 217, 0.1), transparent 26%),
     linear-gradient(135deg, rgba(255,255,255,0.08), transparent 60%);
   z-index: -1;
 }
 
 .festive-card {
-  background: linear-gradient(135deg, rgba(var(--accent-rgb, 24, 192, 106), 0.18), rgba(var(--secondary-rgb, 5, 183, 216), 0.08));
-  border: 1px solid rgba(var(--accent-rgb, 24, 192, 106), 0.18);
-  box-shadow: 0 8px 30px rgba(var(--primary-rgb, 11, 107, 58), 0.04);
+  background: linear-gradient(135deg, rgba(99, 199, 169, 0.18), rgba(95, 183, 232, 0.1));
+  border: 1px solid rgba(44, 122, 102, 0.16);
+  box-shadow: 0 10px 34px rgba(33, 75, 85, 0.06);
 }
 
 .festive-card-empty {
-  background: linear-gradient(180deg, rgba(247, 255, 251, 1), rgba(var(--secondary-rgb, 5, 183, 216), 0.04));
-  border: 1px solid rgba(var(--primary-rgb, 11, 107, 58), 0.08);
+  background: linear-gradient(180deg, rgba(247, 252, 255, 1), rgba(95, 183, 232, 0.06));
+  border: 1px solid rgba(44, 122, 102, 0.08);
 }
 
 .festive-sep {
-  border-color: rgba(var(--accent-rgb, 24, 192, 106), 0.08);
+  border-color: rgba(44, 122, 102, 0.08);
 }
 
 .theme-btn {
-  background: var(--primary-color, #0b7a44);
+  background: linear-gradient(135deg, #2c7a66, #5fb7e8);
   color: var(--button-text-color, #fff);
-  border: 1px solid rgba(var(--primary-rgb, 11, 107, 58), 0.14);
-  box-shadow: 0 8px 24px rgba(var(--primary-rgb, 11, 107, 58), 0.08);
+  border: 1px solid rgba(44, 122, 102, 0.18);
+  box-shadow: 0 10px 26px rgba(44, 122, 102, 0.14);
 }
 
 .theme-btn:hover {
-  background: var(--secondary-color, #05b7d8);
+  background: linear-gradient(135deg, #275f51, #4a9ccc);
 }
 
 .theme-submit {
-  background: linear-gradient(90deg, var(--accent-color, #18c06a), var(--secondary-color, #05b7d8));
+  background: linear-gradient(90deg, #63c7a9, #5fb7e8);
   color: var(--button-text-color, #fff);
-  box-shadow: 0 10px 34px rgba(var(--accent-rgb, 24, 192, 106), 0.12);
+  box-shadow: 0 12px 34px rgba(95, 183, 232, 0.18);
 }
 
 .theme-badge {
-  color: var(--primary-color, #0b6b3a);
-  background: rgba(var(--primary-rgb, 11, 107, 58), 0.08);
-  border: 1px solid rgba(var(--primary-rgb, 11, 107, 58), 0.08);
+  color: #2c7a66;
+  background: rgba(95, 183, 232, 0.12);
+  border: 1px solid rgba(44, 122, 102, 0.12);
   padding: 0.15rem 0.5rem;
   border-radius: 10px;
   font-weight: 700;
@@ -89,7 +89,7 @@ body {
   height: 16rem;
   object-fit: cover;
   border-radius: 12px;
-  background-color: rgba(var(--secondary-rgb, 5, 183, 216), 0.05);
+  background-color: rgba(95, 183, 232, 0.06);
 }
 
 .max-w-7xl .bg-white {
@@ -124,7 +124,7 @@ html, body {
     box-sizing: border-box;
     padding: 0.75rem 1rem;
     border-radius: 1rem;
-    box-shadow: 0 10px 24px rgba(11, 122, 68, 0.08);
+    box-shadow: 0 10px 24px rgba(33, 75, 85, 0.08);
   }
 
   .image-large {

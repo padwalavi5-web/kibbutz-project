@@ -46,12 +46,12 @@ export const CommunityStatsModal: React.FC<CommunityStatsModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-[#fefcf9] border border-[#e8e4dc] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative text-[#2d241d] space-y-6 max-h-[90vh] flex flex-col">
+      <div className="bg-white border border-sky-100 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative text-slate-800 space-y-6 max-h-[90vh] flex flex-col">
         
         {/* כפתור סגירה */}
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 w-9 h-9 rounded-full bg-[#f4f0ea] hover:bg-[#eae4d8] text-[#635548] font-bold flex items-center justify-center transition-colors cursor-pointer"
+          className="absolute top-4 left-4 w-9 h-9 rounded-full bg-sky-50 hover:bg-sky-100 text-slate-600 font-bold flex items-center justify-center transition-colors cursor-pointer"
           title="סגירה"
         >
           <X className="w-4 h-4" />
@@ -59,11 +59,11 @@ export const CommunityStatsModal: React.FC<CommunityStatsModalProps> = ({
 
         {/* כותרת החלונית */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-1.5 bg-[#f4f0ea] text-[#7a5d37] border border-[#ded8ce] text-xs font-semibold px-3.5 py-1 rounded-full">
+          <div className="inline-flex items-center gap-1.5 bg-sky-50 text-[#2c7a66] border border-sky-100 text-xs font-semibold px-3.5 py-1 rounded-full">
             <Lock className="w-3.5 h-3.5" />
             <span>תצוגת מנהלי מערכת</span>
           </div>
-          <h2 className="text-2xl font-extrabold text-[#2d241d] font-['Heebo']">
+          <h2 className="text-2xl font-extrabold text-slate-800 font-sans">
             {modals.communityModalTitle}
           </h2>
           <p className="text-xs sm:text-sm text-[#635548]">
@@ -91,7 +91,7 @@ export const CommunityStatsModal: React.FC<CommunityStatsModalProps> = ({
                       className="w-11 h-11 object-cover rounded-xl shrink-0 overflow-hidden"
                     />
                     <div className="truncate">
-                      <h4 className="font-bold text-xs sm:text-sm text-[#2d241d] font-['Heebo'] truncate">
+                      <h4 className="font-bold text-xs sm:text-sm text-slate-800 font-sans truncate">
                         {photo.title}
                       </h4>
                       <p className="text-[11px] text-[#635548]">
@@ -101,16 +101,16 @@ export const CommunityStatsModal: React.FC<CommunityStatsModalProps> = ({
                   </div>
 
                   <div className="text-left shrink-0">
-                    <span className="font-bold text-xs text-[#7a5d37] bg-[#f4f0ea] px-3 py-1 rounded-full border border-[#ded8ce]">
+                    <span className="font-bold text-xs text-[#2c7a66] bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
                       {stats.totalPoints} {modals.pointsText}
                     </span>
                   </div>
                 </div>
 
                 {/* בר התקדמות יחסי */}
-                <div className="w-full bg-[#f4f0ea] h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-sky-50 h-2 rounded-full overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-[#d9bc8c] to-[#a88247] h-full rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-[#63c7a9] to-[#5fb7e8] h-full rounded-full transition-all duration-500"
                     style={{ width: `${Math.max(5, percentage)}%` }}
                   ></div>
                 </div>
@@ -121,7 +121,7 @@ export const CommunityStatsModal: React.FC<CommunityStatsModalProps> = ({
 
         <button
           onClick={onClose}
-          className="w-full py-3.5 bg-[#3d332a] hover:bg-[#524438] text-[#f7f4ef] font-bold text-sm rounded-2xl transition-all duration-200 cursor-pointer shadow-xs"
+          className="w-full py-3.5 bg-gradient-to-r from-[#2c7a66] to-[#5fb7e8] hover:opacity-95 text-white font-bold text-sm rounded-2xl transition-all duration-200 cursor-pointer shadow-xs"
         >
           סגירה
         </button>
@@ -130,4 +130,3 @@ export const CommunityStatsModal: React.FC<CommunityStatsModalProps> = ({
     </div>
   );
 };
-

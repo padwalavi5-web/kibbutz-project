@@ -34,8 +34,8 @@ export const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
   const isRanked = currentSlot !== undefined;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-white border-2 border-slate-300 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative text-[#2c2017] max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-fadeIn">
+      <div className="bg-white border-2 border-sky-100 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative text-slate-800 max-h-[90vh] flex flex-col">
         
         {/* כפתור סגירה */}
         <button
@@ -47,7 +47,7 @@ export const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
         </button>
 
         {/* תמונה / תיבת מילוי מקום */}
-        <div className="relative h-64 w-full bg-slate-100 flex items-center justify-center shrink-0">
+        <div className="relative h-64 w-full bg-sky-50 flex items-center justify-center shrink-0">
           <ImageBox
             src={photo.imageUrl}
             alt={photo.title}
@@ -61,7 +61,7 @@ export const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
             <h2 className="text-xl font-extrabold text-[#2c2017]">
               {photo.title}
             </h2>
-            <span className="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-md">
+            <span className="bg-sky-50 text-[#2c7a66] text-xs font-bold px-2.5 py-1 rounded-md border border-sky-100">
               {photo.category}
             </span>
           </div>
@@ -103,7 +103,7 @@ export const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
                       onAssignToLadder(photo.id, slot.rank);
                       onClose();
                     }}
-                    className="p-2 bg-slate-100 hover:bg-[#2c2017] hover:text-[#f7e6cc] text-[#2c2017] rounded-xl text-xs font-bold transition-all text-center cursor-pointer border border-slate-200"
+                    className="p-2 bg-sky-50 hover:bg-[#2c7a66] hover:text-[#f7fcff] text-[#2c7a66] rounded-xl text-xs font-bold transition-all text-center cursor-pointer border border-sky-100"
                   >
                     <span>#{slot.rank}</span>
                   </button>

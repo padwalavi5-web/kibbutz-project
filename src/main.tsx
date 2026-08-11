@@ -1,47 +1,45 @@
-import {StrictMode} from 'react';
-import {createRoot} from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { SITE_CONFIG } from './content';
 
-// הגדרת משתני CSS גלובליים לפי ההגדרות בקובץ site-config.ts
 const theme = (SITE_CONFIG && SITE_CONFIG.theme) ? SITE_CONFIG.theme : {} as any;
 const root = document.documentElement;
-try {
-  if (typeof theme.primaryColor === 'string') root.style.setProperty('--primary-color', theme.primaryColor);
-  if (typeof theme.accentColor === 'string') root.style.setProperty('--accent-color', theme.accentColor);
-  if (typeof theme.buttonTextColor === 'string') root.style.setProperty('--button-text-color', theme.buttonTextColor);
-  if (typeof theme.pageBackground === 'string') root.style.setProperty('--page-background', theme.pageBackground);
-  if (typeof theme.fontFamily === 'string') root.style.setProperty('--font-family', theme.fontFamily);
 
-  // Helper: convert hex to r,g,b for rgba usage
-  function hexToRgb(hex?: string) {
+try {
+  const primaryColor = '#2c7a66';
+  const accentColor = '#63c7a9';
+  const secondaryColor = '#5fb7e8';
+  const buttonTextColor = '#ffffff';
+  const pageBackground = 'linear-gradient(180deg, #eaf8ff 0%, #e4f4ff 34%, #eefaf4 70%, #f8fcff 100%)';
+  const fontFamily = "'Noto Sans Hebrew', 'Inter', sans-serif";
+
+  const hexToRgb = (hex?: string) => {
     if (!hex || typeof hex !== 'string') return '0,0,0';
     const h = hex.replace('#', '');
-    const normalized = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
+    const normalized = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
     if (!/^[0-9a-fA-F]{6}$/.test(normalized)) return '0,0,0';
     const bigint = parseInt(normalized, 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
     const b = bigint & 255;
     return `${r}, ${g}, ${b}`;
-  }
+  };
 
-  if (typeof theme.accentColor === 'string') root.style.setProperty('--accent-rgb', hexToRgb(theme.accentColor));
-  if (typeof theme.primaryColor === 'string') root.style.setProperty('--primary-rgb', hexToRgb(theme.primaryColor));
-  if (typeof theme.secondaryAccent === 'string') root.style.setProperty('--secondary-color', theme.secondaryAccent);
-  if (typeof theme.secondaryAccent === 'string') root.style.setProperty('--secondary-rgb', hexToRgb(theme.secondaryAccent));
+  root.style.setProperty('--primary-color', primaryColor);
+  root.style.setProperty('--accent-color', accentColor);
+  root.style.setProperty('--secondary-color', secondaryColor);
+  root.style.setProperty('--button-text-color', buttonTextColor);
+  root.style.setProperty('--page-background', pageBackground);
+  root.style.setProperty('--font-family', fontFamily);
+  root.style.setProperty('--primary-rgb', hexToRgb(primaryColor));
+  root.style.setProperty('--accent-rgb', hexToRgb(accentColor));
+  root.style.setProperty('--secondary-rgb', hexToRgb(secondaryColor));
 
-  // Fallback: set body background directly in case CSS var usage is ignored by the environment or cached CSS
-  try {
-    if (typeof theme.pageBackground === 'string' && theme.pageBackground.trim().length > 0) {
-      document.body.style.background = theme.pageBackground;
-    }
-  } catch (e) {
-    // ignore
-  }
+  document.body.style.background = pageBackground;
+  document.body.style.fontFamily = fontFamily;
 
-  // Debug info for easier verification in browser console
   try {
     console.info('Applied SITE_CONFIG.theme:', {
       primary: theme.primaryColor,
@@ -51,8 +49,7 @@ try {
     });
   } catch (e) {}
 } catch (e) {
-  // אם משהו נכשל בהגדרת התמה — אל תעצור את ההרצה של האפליקציה
-  console.warn('נכשל ההגדרת תמה אוטומטית:', e);
+  console.warn('Failed to apply theme:', e);
 }
 
 createRoot(document.getElementById('root')!).render(
