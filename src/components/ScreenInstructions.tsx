@@ -8,6 +8,7 @@
 import React from 'react';
 import { SITE_CONFIG } from '../content';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import openingHeroImage from '../assets/images/kibbutz_opening_hero_2026.jpg';
 
 interface ScreenInstructionsProps {
   onStartDrag: () => void;
@@ -15,17 +16,17 @@ interface ScreenInstructionsProps {
 
 export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartDrag }) => {
   const { instructionsPage, eventDetails } = SITE_CONFIG;
-  const heroImageUrl = instructionsPage.heroImageUrl;
+  const heroImageUrl = instructionsPage.heroImageUrl || openingHeroImage;
   const heroImageAlt = instructionsPage.heroImageAlt || 'תמונה לדף ההוראות';
 
   return (
     <div className="mx-auto max-w-4xl animate-fadeIn space-y-6 px-3 py-6 sm:px-4 sm:py-8 lg:py-10">
-      <div className="rounded-[28px] border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-emerald-50 p-0 shadow-[0_20px_50px_rgba(33,75,85,0.08)]">
-        <div className="space-y-4 px-5 pt-6 text-center sm:px-8 sm:pt-8">
-          <div className="inline-flex items-center justify-center rounded-full border border-sky-100 bg-white/80 px-4 py-1 text-xs font-bold uppercase tracking-[0.28em] text-[#2c7a66] shadow-sm sm:text-sm">
-            חלק למעלה
+      <div className="overflow-hidden rounded-[28px] border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-emerald-50 shadow-[0_20px_50px_rgba(33,75,85,0.08)]">
+        <div className="px-5 pt-6 text-center sm:px-8 sm:pt-8">
+          <div className="inline-flex items-center justify-center rounded-full border border-sky-100 bg-white/85 px-4 py-1 text-xs font-bold uppercase tracking-[0.28em] text-[#2c7a66] shadow-sm sm:text-sm">
+            פתיחה חגיגית
           </div>
-          <div className="space-y-2">
+          <div className="mt-4 space-y-2">
             <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
               עלומים בת 60!
             </h2>
@@ -38,22 +39,22 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
           </div>
         </div>
 
-        {heroImageUrl ? (
-          <div className="mt-5 overflow-hidden rounded-b-[28px]">
-            <img
-              src={heroImageUrl}
-              alt={heroImageAlt}
-              className="h-56 w-full object-cover sm:h-72"
-            />
-          </div>
-        ) : (
-          <div className="mx-5 mt-5 flex h-56 items-center justify-center rounded-[24px] border border-dashed border-sky-200 bg-sky-50/70 px-6 text-center text-base text-slate-600 sm:mx-8 sm:h-72 sm:text-lg">
-            הוסף כאן תמונה לדף ההוראות על ידי עדכון <span className="font-semibold text-slate-900">site-config.ts → instructionsPage.heroImageUrl</span>
-          </div>
-        )}
+        <div className="mt-5">
+          <img
+            src={heroImageUrl}
+            alt={heroImageAlt}
+            className="h-64 w-full object-cover sm:h-80 lg:h-[28rem]"
+          />
+        </div>
 
-        <div className="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-white via-sky-50 to-emerald-50 p-6 sm:p-9">
-          <div className="relative z-10 space-y-3 text-center">
+        <div className="px-6 py-6 sm:px-9 sm:py-8">
+          <div className="mx-auto max-w-3xl rounded-[24px] border border-white/70 bg-white/80 p-5 text-center shadow-[0_10px_30px_rgba(33,75,85,0.06)] sm:p-6">
+            <p className="text-lg font-medium leading-relaxed text-slate-800 sm:text-xl">
+              התמונות שלפניכם הן חלק מהזיכרון, מהסיפור ומהלב של הקיבוץ.
+            </p>
+          </div>
+
+          <div className="mt-6 space-y-3 text-center">
             <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
               {eventDetails.title} <span className="font-light text-slate-500">|</span> {eventDetails.subTitle}
             </h1>
