@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { Photo, LadderSlot } from '../types';
 import { SITE_CONFIG } from '../content';
 import { ImageBox } from './ImageBox';
+import { PhotoDetailModal } from './PhotoDetailModal';
 import { Plus, X, RefreshCw, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface ScreenDualDragProps {
@@ -36,6 +37,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
 
   const [showLadder, setShowLadder] = useState(false);
   const [quickAssignPhoto, setQuickAssignPhoto] = useState<Photo | null>(null);
+  const [selectedPhotoForDetail, setSelectedPhotoForDetail] = useState<Photo | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -156,11 +158,18 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                   }`}
                 >
                   <div className="relative mb-2">
-                    <ImageBox
-                      src={photo.imageUrl}
-                      alt={photo.title}
-                      className="image-large w-full overflow-hidden rounded-[18px] bg-white p-1"
-                    />
+                    <button
+                      type="button"
+                      onClick={() => setSelectedPhotoForDetail(photo)}
+                      className="block w-full cursor-zoom-in overflow-hidden rounded-[18px] focus:outline-none focus:ring-2 focus:ring-[#7c5c22]/40"
+                      aria-label={`הגדל את ${photo.title}`}
+                    >
+                      <ImageBox
+                        src={photo.imageUrl}
+                        alt={photo.title}
+                        className="image-large w-full overflow-hidden rounded-[18px] bg-white p-1"
+                      />
+                    </button>
                   </div>
 
                   <div className="space-y-2">
@@ -238,11 +247,18 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       <div className="min-w-0 flex-1">
                         {photo ? (
                           <div className="flex items-center gap-3">
-                            <ImageBox
-                              src={photo.imageUrl}
-                              alt={photo.title}
-                              className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white p-1 sm:h-14 sm:w-14"
-                            />
+                            <button
+                              type="button"
+                              onClick={() => setSelectedPhotoForDetail(photo)}
+                              className="block cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-[#7c5c22]/40"
+                              aria-label={`הגדל את ${photo.title}`}
+                            >
+                              <ImageBox
+                                src={photo.imageUrl}
+                                alt={photo.title}
+                                className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white p-1 sm:h-14 sm:w-14"
+                              />
+                            </button>
                             <div className="min-w-0 flex-1">
                               <h4 className="truncate text-xs font-bold text-slate-800 sm:text-sm">
                                 {photo.title}
@@ -384,6 +400,14 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           </div>
         </div>
       )}
+
+      <PhotoDetailModal
+        photo={selectedPhotoForDetail}
+        onClose={() => setSelectedPhotoForDetail(null)}
+        ladderSlots={ladderSlots}
+        onAssignToLadder={onAssignToLadder}
+        onRemoveFromLadder={onRemoveFromLadder}
+      />
     </div>
   );
 };
