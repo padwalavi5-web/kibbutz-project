@@ -45,11 +45,7 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
         </div>
 
         <div className="relative z-10 px-5 pt-6 text-center sm:px-8 sm:pt-8">
-          <div className="inline-flex items-center justify-center rounded-full border border-[#d8bf88] bg-white/85 px-4 py-1 text-xs font-bold uppercase tracking-[0.32em] text-[#7c5c22] shadow-sm sm:text-sm">
-            פתיחה חגיגית
-          </div>
-
-          <div className="mt-4 space-y-3">
+          <div className="mt-2 space-y-3">
             <h2
               className="text-4xl font-extrabold tracking-tight text-slate-900 drop-shadow-[0_1px_0_rgba(255,255,255,0.85)] sm:text-5xl lg:text-7xl"
               style={{ fontFamily: displayFont }}
@@ -62,37 +58,21 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
             >
               לאורך השנים נוצרו כמה תמונות אייקוניות ומרגשות במיוחד, מוזמנים לצפות, להתרשם ו... לדרג!
             </p>
-            <p
-              className="mx-auto max-w-3xl text-base font-bold leading-relaxed text-[#6c4f1e] sm:text-lg lg:text-xl"
-              style={{ fontFamily: bodyFont }}
-            >
-              ושהתמונה הטובה ביותר תנצח!
-            </p>
           </div>
         </div>
 
-        <div className="relative mt-5 px-4 sm:px-6">
-          <div className="overflow-hidden rounded-[30px] border border-white/70 shadow-[0_18px_38px_rgba(33,75,85,0.12)]">
+        <div className="relative mt-6 px-4 sm:px-6">
+          <div className="overflow-hidden rounded-[30px] border border-white/70 bg-[#f8f2e4] shadow-[0_18px_38px_rgba(33,75,85,0.12)]">
             <img
               src={heroImageUrl}
               alt={heroImageAlt}
-              className="h-72 w-full object-cover object-center sm:h-[26rem] lg:h-[34rem]"
+              className="h-[20rem] w-full object-contain object-center p-2 sm:h-[28rem] lg:h-[36rem]"
             />
           </div>
-          <div className="pointer-events-none absolute inset-x-4 bottom-0 h-20 rounded-b-[30px] bg-gradient-to-t from-[#6b4a21]/35 via-[#6b4a21]/8 to-transparent sm:inset-x-6" />
         </div>
 
         <div className="relative z-10 px-5 py-6 sm:px-8 sm:py-8">
-          <div
-            className="mx-auto max-w-4xl rounded-[26px] border border-white/70 bg-white/82 p-5 text-center shadow-[0_12px_34px_rgba(33,75,85,0.08)] sm:p-7"
-            style={{ fontFamily: bodyFont }}
-          >
-            <p className="text-lg leading-relaxed text-slate-800 sm:text-xl lg:text-2xl">
-              התמונות שלפניכם הן חלק מהזיכרון, מהסיפור ומהלב של הקיבוץ.
-            </p>
-          </div>
-
-          <div className="mt-7 space-y-3 text-center">
+          <div className="mt-2 space-y-3 text-center">
             <h1
               className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl"
               style={{ fontFamily: displayFont }}

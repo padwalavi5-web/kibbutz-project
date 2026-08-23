@@ -87,7 +87,6 @@ body {
 .image-large {
   width: 100%;
   height: 16rem;
-  object-fit: cover;
   border-radius: 12px;
   background-color: rgba(95, 183, 232, 0.06);
 }

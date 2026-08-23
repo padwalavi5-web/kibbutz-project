@@ -36,7 +36,7 @@ export const ImageBox: React.FC<ImageBoxProps> = ({
         src={src}
         alt={alt}
         referrerPolicy="no-referrer"
-        className={`object-cover ${className}`}
+        className={`object-contain bg-white ${className}`}
       />
     );
   }

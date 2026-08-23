@@ -1,34 +1,24 @@
 /**
  * =========================================================================
- * דף 2: דף גרירה כפול (ScreenDualDrag.tsx)
+ * דף 2: דף ההצבעה (ScreenDualDrag.tsx)
  * =========================================================================
- * מציג את מאגר התמונות ואת סולם הדירוג (10 מקומות).
- * מותאם באופן מלא לטלפונים ניידים - כולל גרירה במגע (Touch Drag & Drop),
- * תצוגה ניידת נוחה (טאבים ניידים / תצוגה כפולה למסכים רחבים), וכפתורי שיבוץ מהירים.
+ * מציג את מאגר התמונות ואת סולם הדירוג.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Photo, LadderSlot } from '../types';
 import { SITE_CONFIG } from '../content';
 import { ImageBox } from './ImageBox';
 import { Plus, X, RefreshCw, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface ScreenDualDragProps {
-  /** מערך התמונות במאגר */
   photos: Photo[];
-  /** משבצות סולם הדירוג */
   ladderSlots: LadderSlot[];
-  /** פונקציית שיבוץ תמונה בסולם */
   onAssignToLadder: (photoId: string, targetRank?: number) => void;
-  /** פונקציית הסרת תמונה מהסולם */
   onRemoveFromLadder: (photoId: string) => void;
-  /** פונקציה להזזת תמונה בסולם (למעלה/למטה) */
   onMoveSlot: (rank: number, direction: 'up' | 'down') => void;
-  /** פונקציה לאיפוס הסולם */
   onResetLadder: () => void;
-  /** פונקציה לשליחת הדירוג הסופי */
   onSubmitVote: () => void;
-  /** פונקציית מעבר חזרה לדף ההוראות */
   onGoToInstructions: () => void;
 }
 
@@ -44,55 +34,40 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
 }) => {
   const { dragPage } = SITE_CONFIG;
 
-  // 1. הסרנו את אפשרות הגרירה — משתמשים בכפתורי שיבוץ; הסולם מוסתר כבררת מחדל
-  const [showLadder, setShowLadder] = useState<boolean>(false);
+  const [showLadder, setShowLadder] = useState(false);
   const [quickAssignPhoto, setQuickAssignPhoto] = useState<Photo | null>(null);
-
-  // שמירה/מניעת שליחה כפולה
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     try {
       const v = localStorage.getItem('kibbutz_60_has_submitted');
       setHasSubmitted(!!v);
-    } catch (e) {
+    } catch {
       setHasSubmitted(false);
     }
 
-    // Ensure on small screens the ladder is hidden by default (guard against stale state or older builds)
     try {
       if (typeof window !== 'undefined' && window.innerWidth < 1024) {
         setShowLadder(false);
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }, []);
 
-  // ספירת תמונות שדורגו
   const rankedCount = ladderSlots.filter((s) => s.photoId !== null).length;
-  const isLadderFull = rankedCount >= 10;
 
-  /**
-   * בודק באיזה מקום בסולם משובצת תמונה
-   */
   const getPhotoRank = (photoId: string): number | null => {
     const slot = ladderSlots.find((s) => s.photoId === photoId);
     return slot ? slot.rank : null;
   };
 
-  /**
-   * מחזיר אובייקט תמונה לפי מזהה
-   */
   const getPhotoById = (photoId: string | null): Photo | undefined => {
     if (!photoId) return undefined;
     return photos.find((p) => p.id === photoId);
   };
 
-  /**
-   * טיפול בשליחת הדירוג — מונע שליחה כפולה ומייצר דגל מקומי
-   */
   const handleSubmit = async () => {
     if (hasSubmitted || isSubmitting || rankedCount === 0) return;
     setIsSubmitting(true);
@@ -103,7 +78,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
       }
       try {
         localStorage.setItem('kibbutz_60_has_submitted', '1');
-      } catch (e) {
+      } catch {
         // ignore storage errors
       }
       setHasSubmitted(true);
@@ -115,52 +90,57 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-7xl animate-fadeIn space-y-4 px-2 pb-24 pt-4 sm:px-4 sm:py-6 sm:space-y-6">
-      <div className="overflow-hidden rounded-[28px] border border-sky-100 bg-gradient-to-br from-white via-sky-50/70 to-emerald-50/60 p-4 shadow-[0_20px_45px_rgba(33,75,85,0.08)] sm:p-5">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mx-auto max-w-7xl animate-fadeIn space-y-4 px-2 pb-24 pt-4 sm:space-y-6 sm:px-4 sm:py-6">
+      <div className="relative overflow-hidden rounded-[32px] border border-sky-100 bg-gradient-to-br from-[#eef9ff] via-white to-[#f4f0e2] p-4 shadow-[0_22px_60px_rgba(33,75,85,0.10)] sm:p-5">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-16 top-0 h-32 w-32 rounded-full bg-sky-200/35 blur-3xl" />
+          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-amber-200/25 blur-3xl" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#e7cf9a]/35 to-transparent" />
+        </div>
+
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
-            <div>
-            <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
               {dragPage.pageHeaderTitle}
             </h1>
-            <p className="mt-1 text-base leading-relaxed text-slate-600">
+            <p className="max-w-3xl text-lg leading-relaxed text-slate-700 sm:text-xl">
               {dragPage.pageHeaderSubtitle}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-          <button
-            onClick={onGoToInstructions}
-            className="rounded-full bg-sky-50 px-3 py-2 text-sm font-semibold text-[#2c7a66] transition-all duration-200 hover:bg-sky-100"
-          >
-            {dragPage.instructionsButtonText}
-          </button>
-          <button
-            onClick={onResetLadder}
-            className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 hover:bg-sky-50"
-          >
-            <RefreshCw className="h-4 w-4" />
-            <span>{dragPage.resetButtonText}</span>
-          </button>
+            <button
+              onClick={onGoToInstructions}
+              className="rounded-full border border-[#d8bf88] bg-white px-3 py-2 text-sm font-semibold text-[#7c5c22] transition-all duration-200 hover:bg-[#fff6e8]"
+            >
+              {dragPage.instructionsButtonText}
+            </button>
+            <button
+              onClick={onResetLadder}
+              className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 hover:bg-sky-50"
+            >
+              <RefreshCw className="h-4 w-4" />
+              <span>{dragPage.resetButtonText}</span>
+            </button>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:gap-6">
         <div
-          className={`overflow-hidden rounded-[28px] border border-sky-100 bg-white/90 p-3 shadow-[0_18px_36px_rgba(33,75,85,0.06)] sm:p-4 ${
+          className={`overflow-hidden rounded-[28px] border border-sky-100 bg-white/92 p-3 shadow-[0_18px_36px_rgba(33,75,85,0.06)] sm:p-4 ${
             showLadder ? 'hidden' : 'block'
           }`}
         >
           <div className="mb-4 flex items-center justify-between border-b border-sky-100 pb-3">
-          <div>
-            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">
-              {dragPage.poolTitle} ({photos.length})
-            </h2>
-            <p className="text-xs text-slate-500 sm:text-sm">
-              לחצו על ״שבץ בסולם״ ובחרו את המיקום המועדף
-            </p>
-          </div>
+            <div>
+              <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">
+                {dragPage.poolTitle} ({photos.length})
+              </h2>
+              <p className="text-sm text-slate-600 sm:text-base">
+                בחרו תמונות מהמאגר ושבצו אותן למקום הנכון
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
@@ -171,7 +151,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
               return (
                 <div
                   key={photo.id}
-                    className={`flex flex-col justify-between rounded-[24px] border p-3 shadow-sm transition-all duration-200 ${
+                  className={`flex flex-col justify-between rounded-[24px] border p-3 shadow-sm transition-all duration-200 ${
                     isRanked ? 'festive-card' : 'festive-card-empty'
                   }`}
                 >
@@ -179,16 +159,13 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                     <ImageBox
                       src={photo.imageUrl}
                       alt={photo.title}
-                      className="w-full image-large overflow-hidden rounded-[18px]"
+                      className="image-large w-full overflow-hidden rounded-[18px] bg-white p-1"
                     />
-
                   </div>
 
                   <div className="space-y-2">
-                    <h3 className="font-sans text-sm font-bold text-slate-800">
-                      {photo.title}
-                    </h3>
-                    <p className="line-clamp-2 text-xs leading-relaxed text-[#635548]">
+                    <h3 className="text-base font-bold text-slate-800">{photo.title}</h3>
+                    <p className="line-clamp-2 text-sm leading-relaxed text-[#635548]">
                       {photo.description}
                     </p>
 
@@ -204,7 +181,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                       ) : (
                         <button
                           onClick={() => setQuickAssignPhoto(photo)}
-                          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#2c7a66] via-[#63c7a9] to-[#5fb7e8] px-3 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(44,122,102,0.16)] transition-all duration-200 hover:translate-y-[-1px]"
+                          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#7c5c22] via-[#c99b54] to-[#5fb7e8] px-3 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(124,92,34,0.16)] transition-all duration-200 hover:translate-y-[-1px]"
                         >
                           <Plus className="h-4 w-4 text-white" />
                           <span>{dragPage.assignToLadderText}</span>
@@ -223,10 +200,10 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
             <div className="mx-auto max-w-3xl">
               <div className="mb-3 flex items-center justify-between border-b border-slate-100 pb-3">
                 <div>
-                  <h2 className="text-base font-semibold text-slate-900 sm:text-lg">
+                  <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">
                     {dragPage.ladderTitle}
                   </h2>
-                  <p className="text-[11px] text-slate-500 sm:text-xs">
+                  <p className="text-xs text-slate-500 sm:text-sm">
                     {dragPage.ladderSubtitle}
                   </p>
                 </div>
@@ -264,10 +241,10 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                             <ImageBox
                               src={photo.imageUrl}
                               alt={photo.title}
-                              className="h-12 w-12 shrink-0 overflow-hidden rounded-xl sm:h-14 sm:w-14"
+                              className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white p-1 sm:h-14 sm:w-14"
                             />
                             <div className="min-w-0 flex-1">
-                              <h4 className="truncate font-sans text-xs font-bold text-slate-800 sm:text-sm">
+                              <h4 className="truncate text-xs font-bold text-slate-800 sm:text-sm">
                                 {photo.title}
                               </h4>
                               <p className="hidden truncate text-[11px] text-[#635548] sm:block">
@@ -333,7 +310,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
           <div className="flex flex-col gap-3">
             <button
               onClick={() => setShowLadder(true)}
-              className="w-full rounded-2xl bg-gradient-to-r from-[#2c7a66] via-[#63c7a9] to-[#5fb7e8] py-3 text-lg font-semibold text-white shadow-[0_12px_28px_rgba(44,122,102,0.18)]"
+              className="w-full rounded-2xl bg-gradient-to-r from-[#7c5c22] via-[#c99b54] to-[#5fb7e8] py-3 text-lg font-semibold text-white shadow-[0_12px_28px_rgba(124,92,34,0.18)]"
             >
               {dragPage.openLadderButtonText}
             </button>
@@ -348,7 +325,11 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                     : 'cursor-not-allowed bg-slate-200 text-slate-400'
               }`}
             >
-              {hasSubmitted ? 'הדירוג נשלח' : isSubmitting ? 'שולח...' : dragPage.submitButtonText + (rankedCount > 0 ? ` (${rankedCount})` : '')}
+              {hasSubmitted
+                ? 'הדירוג נשלח'
+                : isSubmitting
+                  ? 'שולח...'
+                  : dragPage.submitButtonText + (rankedCount > 0 ? ` (${rankedCount})` : '')}
             </button>
           </div>
         </div>
@@ -365,7 +346,7 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
                 onClick={() => setQuickAssignPhoto(null)}
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-50 text-slate-600 transition-colors hover:bg-sky-100"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -404,6 +385,5 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
         </div>
       )}
     </div>
-  </div>
   );
 };

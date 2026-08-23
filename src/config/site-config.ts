@@ -42,7 +42,7 @@ export const SITE_CONFIG = {
   // --- דף 1: הוראות השתתפות ---
   instructionsPage: {
     title: "הוראות השתתפות בדירוג התמונות",
-    subtitle: "מערכת דירוג תמונות ה-60 של עלומים",
+    subtitle: "איך משתתפים בדירוג",
     heroImageUrl: "",
     heroImageAlt: "תמונה לדף הוראות",
     steps: [
@@ -53,7 +53,7 @@ export const SITE_CONFIG = {
       },
       {
         number: "2",
-        title: "גררו או שבצו בסולם",
+        title: "שבצו",
         description: "בחרו את 10 התמונות החשובות ביותר לדעתכם ושבצו אותן ב-10 המקומות בסולם הדירוג."
       },
       {
@@ -68,7 +68,7 @@ export const SITE_CONFIG = {
   // --- דף 2: דף גרירה כפול (מאגר התמונות + סולם הדירוג) ---
   dragPage: {
     pageHeaderTitle: "דירוג תמונות ה-60",
-    pageHeaderSubtitle: "גררו תמונות ממאגר התמונות ישירות לתוך משבצות סולם הדירוג",
+    pageHeaderSubtitle: "שבצו תמונות ממאגר התמונות ישירות לתוך משבצות סולם הדירוג",
     instructionsButtonText: "הוראות",
     rankedStatusText: "דורגו",
     tabBothText: "תצוגה כפולה",
