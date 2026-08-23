@@ -13,15 +13,16 @@
  */
 
 import { Photo } from '../types';
+import photoOneImage from '../assets/images/photo-1.png';
 
 export const PHOTOS_DATA: Photo[] = [
   {
     id: "photo_01",
     title: "תמונה 1",
-    description: "תיאור תמונה 1",
+    description: "השלט של הקיבוץ",
     year: 1966,
     category: "כללי",
-    imageUrl: "", // להוספת תמונה: הדביקו כאן קישור בין הגרשיים
+    imageUrl: photoOneImage,
     photographer: ""
   },
   {
