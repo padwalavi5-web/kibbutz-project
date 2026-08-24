@@ -97,7 +97,7 @@ export function validateLadderCompletion(ladderSlots: LadderSlot[]): {
 export function generateShareSummary(voteResult: VoteResult, photos: Photo[]): string {
   const top3 = voteResult.ladder.slice(0, 3);
   
-  let text = `*הדירוג שלי לחג המשק 60 לקיבוץ עלומים!*\n\n`;
+  let text = `*הדירוג שלי לחג המשק 60 שנים לקיבוץ עלומים!*\n\n`;
   text += `התמונות המובילות שלי בסולם הדירוג:\n`;
   
   top3.forEach((item, index) => {

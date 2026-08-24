@@ -24,7 +24,7 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
 
   return (
     <div className="mx-auto max-w-5xl animate-fadeIn space-y-6 px-3 py-6 sm:px-4 sm:py-8 lg:py-10">
-      <div className="relative overflow-hidden rounded-[32px] border border-sky-100 bg-gradient-to-br from-[#eef9ff] via-white to-[#f4f0e2] shadow-[0_22px_60px_rgba(33,75,85,0.10)]">
+      <div className="relative overflow-hidden rounded-[32px] border border-sky-100 bg-gradient-to-br from-[#dff5fb] via-[#f4fbf7] to-[#f4ead2] shadow-[0_22px_60px_rgba(33,75,85,0.10)]">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-14 top-8 h-40 w-40 rounded-full bg-sky-200/35 blur-3xl" />
           <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-amber-200/30 blur-3xl" />
@@ -113,7 +113,7 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
                 </span>
                 <h3
                   className="text-xl font-semibold text-slate-900 sm:text-2xl"
-                  style={{ fontFamily: displayFont }}
+                  style={{ fontFamily: bodyFont }}
                 >
                   {step.title}
                 </h3>

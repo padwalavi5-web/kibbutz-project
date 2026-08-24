@@ -27,7 +27,7 @@ export const SITE_CONFIG = {
   // --- פרטי האירוע והכותרת העליונה ---
   eventDetails: {
     title: "חג המשק",
-    subTitle: "60 לקיבוץ עלומים",
+    subTitle: "60 שנים לקיבוץ עלומים",
     dateText: "חמישי | 03.09.26 - כ\"א אלול תשפ\"ו",
     locationText: "דשא חתונות-עלומים",
     mainBannerImage: "", // קישור לבאנר (אם ריק - לא יוצג)
@@ -111,7 +111,7 @@ export const SITE_CONFIG = {
   // --- טקסטים לחלונות קופצים (מודלים של סיכום וסטטיסטיקה) ---
   modals: {
     submissionTitle: "הדירוג נשלח בהצלחה!",
-    submissionSubtitle: "חג המשק 60 לקיבוץ עלומים",
+    submissionSubtitle: "חג המשק 60 שנים לקיבוץ עלומים",
     thankYouText: "תודה על ההשתתפות בעיצוב תערוכת ה-60 של עלומים! קולך נספר ונשמר בהצלחה.",
     summaryTitle: "סיכום דירוג 10 התמונות שלך:",
     shareWhatsAppText: "שיתוף בוואטסאפ",
