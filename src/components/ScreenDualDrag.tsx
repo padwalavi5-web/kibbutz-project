@@ -124,6 +124,19 @@ export const ScreenDualDrag: React.FC<ScreenDualDragProps> = ({
               <RefreshCw className="h-4 w-4" />
               <span>{dragPage.resetButtonText}</span>
             </button>
+            <button
+              onClick={handleSubmit}
+              disabled={rankedCount === 0 || isSubmitting || hasSubmitted}
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(124,92,34,0.18)] transition-all duration-200 ${
+                hasSubmitted
+                  ? 'cursor-not-allowed bg-sky-300'
+                  : rankedCount > 0
+                    ? 'bg-gradient-to-r from-[#7c5c22] via-[#c99b54] to-[#5fb7e8] hover:brightness-105'
+                    : 'cursor-not-allowed bg-slate-300'
+              }`}
+            >
+              {hasSubmitted ? 'ההצבעה נשלחה' : isSubmitting ? 'שולח...' : 'שליחת הצבעה'}
+            </button>
           </div>
         </div>
       </div>

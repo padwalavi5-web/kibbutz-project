@@ -110,9 +110,9 @@ export const SITE_CONFIG = {
 
   // --- טקסטים לחלונות קופצים (מודלים של סיכום וסטטיסטיקה) ---
   modals: {
-    submissionTitle: "הדירוג נשלח בהצלחה!",
+    submissionTitle: "תגובתך נרשמה בהצלחה!",
     submissionSubtitle: "חג המשק 60 שנים לקיבוץ עלומים",
-    thankYouText: "תודה על ההשתתפות בעיצוב תערוכת ה-60 של עלומים! קולך נספר ונשמר בהצלחה.",
+    thankYouText: "חג משק שמח!",
     summaryTitle: "סיכום דירוג 10 התמונות שלך:",
     shareWhatsAppText: "שיתוף בוואטסאפ",
     copySummaryText: "העתקת סיכום דירוג",
@@ -129,10 +129,10 @@ export const SITE_CONFIG = {
 
   // --- הגדרות כניסה למנהל המערכת (לצפייה בתוצאות בלבד) ---
   admin: {
-    pinCode: "6060", // קוד הגישה למנהל (ניתן לשינוי כאן)
+    pinCode: "112358", // קוד הגישה למנהל (ניתן לשינוי כאן)
     modalTitle: "כניסת מנהל מערכת",
     modalSubtitle: "הזינו קוד גישה לצפייה בריכוז תוצאות והצבעות הקהילה",
-    inputPlaceholder: "הזינו קוד (ברירת מחדל: 6060)",
+    inputPlaceholder: "הזינו קוד גישה",
     loginButtonText: "כניסה לתוצאות",
     errorMessage: "קוד גישה שגוי, נסו שוב",
     footerLinkText: "כניסת מנהלים לתוצאות"
