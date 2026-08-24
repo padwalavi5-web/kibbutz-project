@@ -89,10 +89,10 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
         </div>
       </div>
 
-      <div className="rounded-[32px] border border-sky-100 bg-white/92 p-5 shadow-[0_18px_40px_rgba(33,75,85,0.06)] sm:p-7">
+      <div className="instructions-panel rounded-[32px] border border-sky-100 p-5 shadow-[0_18px_40px_rgba(33,75,85,0.09)] sm:p-7">
         <h2
           className="flex items-center gap-3 border-b border-sky-100 pb-4 text-2xl font-semibold text-slate-900 sm:text-3xl"
-          style={{ fontFamily: displayFont }}
+          style={{ fontFamily: bodyFont }}
         >
           <CheckCircle2 className="h-6 w-6 text-[#7c5c22]" />
           <span>{instructionsPage.subtitle}</span>
@@ -102,7 +102,7 @@ export const ScreenInstructions: React.FC<ScreenInstructionsProps> = ({ onStartD
           {instructionsPage.steps.map((step) => (
             <div
               key={step.number}
-              className="flex flex-col justify-between space-y-4 rounded-[26px] border border-sky-50 bg-gradient-to-br from-white via-[#f8fbff] to-[#fff6e8] p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+              className="instruction-step flex flex-col justify-between space-y-4 rounded-[26px] border border-sky-100 p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
             >
               <div className="flex items-center gap-3">
                 <span
