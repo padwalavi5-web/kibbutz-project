@@ -19,7 +19,10 @@ async function tryInitFirebase() {
     };
 
     const hasCfg = cfg.apiKey && cfg.projectId && cfg.appId;
-    if (!hasCfg) return;
+    if (!hasCfg) {
+      console.warn('⚠️ Firebase env vars are missing. Set VITE_FIREBASE_API_KEY, VITE_FIREBASE_PROJECT_ID, and VITE_FIREBASE_APP_ID to enable Firestore writes.');
+      return;
+    }
 
     // dynamic imports so the code doesn't fail when firebase isn't installed/configured
     const firebaseApp = await import('firebase/app');

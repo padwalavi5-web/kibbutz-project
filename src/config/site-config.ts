@@ -118,7 +118,7 @@ export const SITE_CONFIG = {
     copySummaryText: "העתקת סיכום דירוג",
     copiedText: "הועתק ללוח!",
     communityStatsButton: "כניסת מנהל לתוצאות הקהילה",
-    redraftButton: "שינוי דירוג מחדש",
+    redraftButton: "עריכת התוצאות",
     communityModalTitle: "תוצאות הקהילה - תמונות ה-60",
     communityModalSubtitle: "דירוג מצטבר מכלל ההצבעות של חברי ואורחי קיבוץ עלומים",
     totalVotesPrefix: "נרשמו עד כה",

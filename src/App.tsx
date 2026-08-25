@@ -234,19 +234,11 @@ export default function App() {
       {/* מודל אישור ושליחת דירוג */}
       {voteResult && (
         <SubmissionModal
-          voteResult={voteResult}
-          allPhotos={PHOTOS_DATA}
-          isSaving={isSavingVote}
-          saveMessage={saveStatusMessage}
           onClose={() => setVoteResult(null)}
           onReset={() => {
             handleResetLadder();
             setVoteResult(null);
             handleNavigateScreen('drag');
-          }}
-          onOpenCommunityStats={() => {
-            setVoteResult(null);
-            setShowAdminLogin(true);
           }}
         />
       )}

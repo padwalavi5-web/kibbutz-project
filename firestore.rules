@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isVoteCreate() {
+      return request.resource.data.keys().hasAll([
+        'timestamp',
+        'ladder',
+        'totalPointsAssigned',
+        'photoScoresMap',
+        'submittedAt'
+      ]) &&
+      request.resource.data.ladder is list &&
+      request.resource.data.photoScoresMap is map &&
+      request.resource.data.totalPointsAssigned is int &&
+      request.resource.data.timestamp is string &&
+      request.resource.data.submittedAt is string;
+    }
+
+    match /kibbutz_60_votes/{voteId} {
+      allow create: if isVoteCreate();
+      allow read, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
