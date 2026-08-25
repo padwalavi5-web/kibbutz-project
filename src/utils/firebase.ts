@@ -1,6 +1,5 @@
 ﻿import { VoteResult } from '../types';
 
-// Optional Firebase initialization — reads config from Vite env vars (VITE_FIREBASE_*)
 let firebaseInitialized = false;
 let firebaseDb: any = null;
 
@@ -20,11 +19,10 @@ async function tryInitFirebase() {
 
     const hasCfg = cfg.apiKey && cfg.projectId && cfg.appId;
     if (!hasCfg) {
-      console.warn('⚠️ Firebase env vars are missing. Set VITE_FIREBASE_API_KEY, VITE_FIREBASE_PROJECT_ID, and VITE_FIREBASE_APP_ID to enable Firestore writes.');
+      console.warn('⚠️ Firebase env vars are missing.');
       return;
     }
 
-    // dynamic imports so the code doesn't fail when firebase isn't installed/configured
     const firebaseApp = await import('firebase/app');
     const firestore = await import('firebase/firestore');
 
@@ -44,7 +42,7 @@ async function tryInitFirebase() {
 }
 
 /**
- * Save vote either to Firestore (if configured) or to localStorage as fallback
+ * שמירת הצבעה ב-Firestore (או ב-localStorage במידה ואין חיבור)
  */
 export async function saveToFirebase(voteData: VoteResult): Promise<{ success: boolean; id: string; message: string }> {
   console.log('🔥 [Firebase] saving vote', voteData);
@@ -68,7 +66,6 @@ export async function saveToFirebase(voteData: VoteResult): Promise<{ success: b
       }
     }
 
-    // Fallback: save locally
     const existingVotesRaw = localStorage.getItem('kibbutz_60_all_votes');
     const existingVotes = existingVotesRaw ? JSON.parse(existingVotesRaw) : [];
 
@@ -88,9 +85,40 @@ export async function saveToFirebase(voteData: VoteResult): Promise<{ success: b
   }
 }
 
-export function getCommunityScores(photos: Array<{ id: string; title: string }>) {
+/**
+ * שליפת כל ההצבעות מ-Firestore וחישוב הניקוד המצטבר
+ */
+export async function fetchCommunityVotes(): Promise<VoteResult[]> {
+  try {
+    await tryInitFirebase();
+
+    if (firebaseInitialized && firebaseDb) {
+      const firestore = await import('firebase/firestore');
+      const { collection, getDocs } = firestore as any;
+      const querySnapshot = await getDocs(collection(firebaseDb, 'kibbutz_60_votes'));
+      
+      const remoteVotes: VoteResult[] = [];
+      querySnapshot.forEach((doc: any) => {
+        remoteVotes.push(doc.data() as VoteResult);
+      });
+
+      return remoteVotes;
+    }
+  } catch (e) {
+    console.warn('Failed to fetch from Firebase, falling back to localStorage', e);
+  }
+
   const existingVotesRaw = localStorage.getItem('kibbutz_60_all_votes');
-  const allVotes = existingVotesRaw ? JSON.parse(existingVotesRaw) : [];
+  return existingVotesRaw ? JSON.parse(existingVotesRaw) : [];
+}
+
+/**
+ * חישוב הסטטיסטיקות עבור רשימת התמונות מתוך הנתונים שנשלפו
+ */
+export function getCommunityScores(photos: Array<{ id: string; title: string }>, votesList?: VoteResult[]) {
+  const allVotes = votesList || (localStorage.getItem('kibbutz_60_all_votes') 
+    ? JSON.parse(localStorage.getItem('kibbutz_60_all_votes')!) 
+    : []);
 
   const stats: Record<string, { totalPoints: number; voteCount: number; rankPositions: number[] }> = {};
   photos.forEach((photo) => {
@@ -98,6 +126,7 @@ export function getCommunityScores(photos: Array<{ id: string; title: string }>)
   });
 
   allVotes.forEach((vote: VoteResult) => {
+    // תמיכה במבנה הנתונים שנשמר
     if (vote.photoScoresMap) {
       Object.entries(vote.photoScoresMap).forEach(([photoId, pts]) => {
         if (stats[photoId]) {
@@ -106,6 +135,17 @@ export function getCommunityScores(photos: Array<{ id: string; title: string }>)
             stats[photoId].voteCount += 1;
             const rank = 11 - (pts as number);
             stats[photoId].rankPositions.push(rank);
+          }
+        }
+      });
+    } else if (vote.ladder && Array.isArray(vote.ladder)) {
+      vote.ladder.forEach((item: any) => {
+        if (item.photoId && stats[item.photoId]) {
+          const pts = item.points || 0;
+          stats[item.photoId].totalPoints += pts;
+          if (pts > 0) {
+            stats[item.photoId].voteCount += 1;
+            stats[item.photoId].rankPositions.push(item.rank || 1);
           }
         }
       });
